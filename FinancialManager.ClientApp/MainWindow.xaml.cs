@@ -28,4 +28,9 @@ public partial class MainWindow : Window
     {
         MessageBox.Show("Hello world!");
     }
+
+    private void myButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

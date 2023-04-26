@@ -8,5 +8,6 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button Click="Button_Click">Hello world</Button>
+        <Button x:Name="myButton" Click="myButton_Click">Hello </Button>
     </Grid>
 </Window>
