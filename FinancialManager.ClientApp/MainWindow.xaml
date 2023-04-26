@@ -9,5 +9,6 @@
     <Grid>
         <Button Click="Button_Click">Hello world</Button>
         <Button x:Name="myButton" Click="myButton_Click">Hello </Button>
+        <Button x:Name="myButton1" Click="myButton_Click_1">Hi </Button>
     </Grid>
 </Window>
