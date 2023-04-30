@@ -23,6 +23,11 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        var win = new ResponseWindow();
+
+        win.Show();
+
+        this.Close();
     }
 
 }
