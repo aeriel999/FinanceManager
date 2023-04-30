@@ -22,6 +22,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        for (int i = 0; i < 10; i++)
+        {
+            LB.Items.Add("");
+        }
 
     }
 
