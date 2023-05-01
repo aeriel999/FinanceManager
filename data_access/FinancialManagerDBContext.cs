@@ -10,10 +10,20 @@ using System.Configuration;
 using System.Data.SqlClient;
 using data_access.Helpers;
 
+
+
 namespace data_access
 {
     public class FinancialManagerDBContext:DbContext
     {
+
+        public string Connection { get; set; }
+
+        public FinancialManagerDBContext(string connection)
+        {
+            Connection=connection;
+        }
+
         public DbSet<Category_for_expense> Categories_For_Expense { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
@@ -22,12 +32,16 @@ namespace data_access
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
+            //string connection = ConfigurationManager.ConnectionStrings["FinancManagerConnectionString"].ConnectionString;
+
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
-                                          Initial Catalog = FinancialManager_Db;
-                                          Integrated Security=True; Connect Timeout=30;
-                                          Encrypt=False;TrustServerCertificate=False;
-                                          ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            /* optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
+                                           Initial Catalog = FinancialManager_Db;
+                                           Integrated Security=True; Connect Timeout=30;
+                                           Encrypt=False;TrustServerCertificate=False;
+                                           ApplicationIntent=ReadWrite;MultiSubnetFailover=False");*/
+            optionsBuilder.UseSqlServer(Connection);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
