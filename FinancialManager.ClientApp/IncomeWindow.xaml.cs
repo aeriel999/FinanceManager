@@ -10,30 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 
 namespace FinancialManager.ClientApp;
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for IncomeWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class IncomeWindow : Window
 {
-    public MainWindow()
+    public IncomeWindow()
     {
         InitializeComponent();
-        for (int i = 0; i < 10; i++)
-        {
-            LB.Items.Add("");
-        }
-
-        //var win = new ResponseWindow();
-
-        //win.Show();
-
-        //this.Close();
     }
-
 }
-
