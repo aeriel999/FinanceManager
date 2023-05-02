@@ -20,6 +20,7 @@ namespace FinancialManager.ClientApp
     public partial class ResponseWindow : Window
     {
         private ViewModel _model = new ViewModel();
+        private bool _isBusy = true;
         public ResponseWindow()
         {
             InitializeComponent();
@@ -27,9 +28,24 @@ namespace FinancialManager.ClientApp
             DataContext = _model;
         }
 
+
         private void SaveResponseAmountClick(object sender, RoutedEventArgs e)
         {
             _model.SaveAmount();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isBusy)
+            {
+                _model.NumberOfChanges++;
+                _isBusy = false;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _isBusy = true;
         }
     }
 }

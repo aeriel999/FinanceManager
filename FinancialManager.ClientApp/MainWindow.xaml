@@ -36,12 +36,15 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Margin="15,15,0,15" Grid.ColumnSpan="2" FontSize="22" HorizontalContentAlignment="Center" Background="{DynamicResource PrimaryHueLightBrush }" Foreground="{DynamicResource MaterialDesignCardBackground}">28.04.2023</Label>
-            <Button Margin="10,0,10,0" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas"
+            <Button Margin="10,0,10,0" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
+                    Height="40" FontSize="22" FontFamily="Consolas" Click="OpenResponseWindowBtnClick"
                     materialDesign:ButtonAssist.CornerRadius="20">Expenses</Button>
             <Label Grid.Column="2" >Plane: 15000 UAH / Spent 1000 UAH</Label>
             <Label Grid.Row="1" FontSize="20">Balance:</Label>
-            <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="0" FontSize="35" FontWeight="Bold">35688 UAH</Label>
-            <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" 
+            <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="0" FontSize="35"
+                    FontWeight="Bold">35688 UAH</Label>
+            <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
+                    Click="OpenIncomeWindowBtnClick" Height="40" FontSize="22" FontFamily="Consolas" 
                     materialDesign:ButtonAssist.CornerRadius="20">Incomes</Button>
             <Label Grid.Column="2" Grid.Row="1" >Alteady get: 13000 UAH / Plane 10000 UAH</Label>
         </Grid>
@@ -72,6 +75,7 @@
         </DockPanel>
         <UniformGrid Columns="2" DockPanel.Dock="Bottom" >
             <Button Margin="180,0,0,0" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="SaveAmountBtnClick"
                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" > Add </Button>
             <Button Margin="0,0,70,0"  HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10"> More Diagrams </Button>

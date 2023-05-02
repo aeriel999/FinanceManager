@@ -12,8 +12,8 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    [Migration("20230502083740_test_8")]
-    partial class test_8
+    [Migration("20230502123235_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace data_access.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ActuallyExpense")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -77,7 +77,7 @@ namespace data_access.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("PlaneExpense")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -87,23 +87,23 @@ namespace data_access.Migrations
                         new
                         {
                             Id = 1,
-                            ActuallyExpense = 2500m,
+                            ActuallyExpense = 0m,
                             Name = "Utility payments",
-                            PlaneExpense = 5000m
+                            PlaneExpense = 0m
                         },
                         new
                         {
                             Id = 2,
-                            ActuallyExpense = 2500m,
+                            ActuallyExpense = 0m,
                             Name = "Products",
-                            PlaneExpense = 3000m
+                            PlaneExpense = 0m
                         },
                         new
                         {
                             Id = 3,
-                            ActuallyExpense = 1200m,
+                            ActuallyExpense = 0m,
                             Name = "Money for the road",
-                            PlaneExpense = 1500m
+                            PlaneExpense = 0m
                         });
                 });
 
@@ -116,7 +116,7 @@ namespace data_access.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -180,7 +180,7 @@ namespace data_access.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -194,27 +194,31 @@ namespace data_access.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ExpenseItems");
+                    b.ToTable("ExpenseItems", t =>
+                        {
+                            t.HasCheckConstraint("Amount", "Amount>= 0")
+                                .HasName("Amount1");
+                        });
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Amount = 2500m,
+                            Amount = 0m,
                             CategoryId = 1,
                             Name = "Electricity"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 2500m,
+                            Amount = 0m,
                             CategoryId = 2,
                             Name = "Products for the home"
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 1200m,
+                            Amount = 0m,
                             CategoryId = 3,
                             Name = "Fuel for cars"
                         });
@@ -249,7 +253,7 @@ namespace data_access.Migrations
                     b.ToTable("Incomes", t =>
                         {
                             t.HasCheckConstraint("Amount", "Amount >= 0")
-                                .HasName("Amount1");
+                                .HasName("Amount2");
                         });
 
                     b.HasData(

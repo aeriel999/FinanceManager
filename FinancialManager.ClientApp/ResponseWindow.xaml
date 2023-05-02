@@ -16,19 +16,18 @@
         Title="ResponseWindow" Height="450" Width="800">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
-  Mode="Custom"
-  Background="Black"
-  Foreground="White"
-  Padding="16 0"
-  ClipToBounds="False">
-            <StackPanel
-    Orientation="Horizontal">
+              Mode="Custom"
+              Background="Black"
+              Foreground="White"
+              Padding="16 0"
+              ClipToBounds="False">
+            <StackPanel Orientation="Horizontal">
                 <DatePicker SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Margin="2,5"></DatePicker>
                 <TextBlock VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
                     <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
                 <materialDesign:Badged  Margin="2,5"
-      Badge="1 changed"
-      VerticalAlignment="Center">
+                          Badge="{Binding NumberOfChanges}"
+                          VerticalAlignment="Center">
                     <Button Margin="5" Click="SaveResponseAmountClick">
                         Save
                     </Button>
@@ -40,10 +39,11 @@
                 <DataTemplate>
                     <ListBoxItem >
                         <StackPanel>
-                            <Expander
-      HorizontalAlignment="Stretch"
-      Header="{Binding Name}">
-                                <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}">
+                            <Expander HorizontalAlignment="Stretch" 
+                              Header="{Binding Name}">
+                                <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" 
+                                         Background="#FFC1D291" Foreground="#FF2C2626"
+                                         ItemsSource="{Binding Items}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <ListBoxItem >
@@ -54,10 +54,10 @@
                                                         <ColumnDefinition Width="2*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock HorizontalAlignment="Left" Margin="5" Grid.Column="0" Text="{Binding Name}"
-                                       TextTrimming="CharacterEllipsis"/>
+                                                            TextTrimming="CharacterEllipsis"/>
                                                     <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
-                                                              Text="{Binding CostPlane, Mode=TwoWay}"
-                                                             />
+                                                              Text="{Binding Amount, StringFormat='0,0.00', Mode=TwoWay}" 
+                                                              TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
                                                     <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
                                                 </Grid>
                                             </ListBoxItem>

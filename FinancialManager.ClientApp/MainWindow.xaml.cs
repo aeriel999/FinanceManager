@@ -20,20 +20,31 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private ViewModel _viewModel = new ViewModel();
     public MainWindow()
     {
         InitializeComponent();
-        for (int i = 0; i < 10; i++)
-        {
-            LB.Items.Add("");
-        }
 
-        //var win = new ResponseWindow();
-
-        //win.Show();
-
-        //this.Close();
+        DataContext = _viewModel;
     }
 
+    private void OpenResponseWindowBtnClick(object sender, RoutedEventArgs e)
+    {
+        var responseWindow = new ResponseWindow();
+
+        responseWindow.Show();
+    }
+
+    private void OpenIncomeWindowBtnClick(object sender, RoutedEventArgs e)
+    {
+        var incomeWindow = new IncomeWindow();
+
+        incomeWindow.Show();
+    }
+
+    private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
+    {
+        _viewModel.SaveAmount();
+    }
 }
 
