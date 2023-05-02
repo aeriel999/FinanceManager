@@ -39,38 +39,46 @@
                 <DataTemplate>
                     <ListBoxItem >
                         <StackPanel>
-                            <Expander HorizontalAlignment="Stretch" 
+                            <Expander HorizontalAlignment="Stretch"
                               Header="{Binding Name}">
-                                <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" 
+                                <DockPanel MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <Grid DockPanel.Dock="Top">
+                                            <Button Click="Button_Click">Add</Button>
+                                        </Grid>
+
+                                    <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" 
                                          Background="#FFC1D291" Foreground="#FF2C2626"
-                                         ItemsSource="{Binding Items}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <ListBoxItem >
-                                                <Grid HorizontalAlignment="Stretch">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="10*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock HorizontalAlignment="Left" Margin="5" Grid.Column="0" Text="{Binding Name}"
-                                                            TextTrimming="CharacterEllipsis"/>
-                                                    <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
+                                         ItemsSource="{Binding Items, Mode=TwoWay}"  >
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate >
+                                                    <ListBoxItem >
+                                                        <Grid HorizontalAlignment="Stretch">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="10*"/>
+                                                                <ColumnDefinition Width="2*"/>
+                                                                <ColumnDefinition Width="2*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBox HorizontalAlignment="Left" Margin="5" Grid.Column="0" 
+                                                                   Text="{Binding Name, Mode=TwoWay}"
+                                                            />
+                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
                                                               Text="{Binding Amount, StringFormat='0,0.00', Mode=TwoWay}" 
                                                               TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
-                                                    <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
-                                                </Grid>
-                                            </ListBoxItem>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
+                                                        </Grid>
+                                                    </ListBoxItem>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    
+                                </DockPanel>
                             </Expander>
                             <Border
-      Background="{DynamicResource MaterialDesignDivider}"
-      Height="1"
-      HorizontalAlignment="Stretch"
-      SnapsToDevicePixels="True" />
-                            </StackPanel>
+                                  Background="{DynamicResource MaterialDesignDivider}"
+                                  Height="1"
+                                  HorizontalAlignment="Stretch"
+                                  SnapsToDevicePixels="True" /> 
+                        </StackPanel>
                     </ListBoxItem >
                 </DataTemplate>
             </ListBox.ItemTemplate>

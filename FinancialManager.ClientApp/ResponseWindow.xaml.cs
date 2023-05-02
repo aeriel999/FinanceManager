@@ -1,4 +1,5 @@
-﻿using System;
+﻿using data_access.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,5 +48,19 @@ namespace FinancialManager.ClientApp
         {
             _isBusy = true;
         }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await _model.AddItemAsync(new ExpenseItem() { Name = "New name11", Amount = 500 });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+       
     }
 }
