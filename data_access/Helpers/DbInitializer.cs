@@ -19,19 +19,26 @@ namespace data_access.Helpers
                 new Category_for_expense()
                 {
                     Id = 1,
-                    Name="Utility payments"
+                    Name="Utility payments",
+                    //PlaneExpense=5000,
+                    //ActuallyExpense=2500
                     
                 },
                 new Category_for_expense()
                 {
                     Id = 2,
-                    Name="Products"
+                    Name="Products",
+                    //PlaneExpense=3000,
+                    //ActuallyExpense = 2500
 
                 },
                 new Category_for_expense()
                 {
                     Id = 3,
-                    Name="Money for the road"
+                    Name="Money for the road",
+                    //PlaneExpense=1500,
+                    //ActuallyExpense = 1200
+                    
 
                 }
             });
@@ -45,18 +52,21 @@ namespace data_access.Helpers
                     Id=1,
                     Name="Electricity",
                     CategoryId=1,
+                    //Amount=2500
                 },
                 new ExpenseItem()
                 {
                     Id=2,
                     Name="Products for the home",
                     CategoryId=2,
+                    //Amount=2500
                 },
                 new ExpenseItem()
                 {
                     Id=3,
                     Name="Fuel for cars",
                     CategoryId=3,
+                    //Amount=1200
                 }
             });
         }
