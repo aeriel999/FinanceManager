@@ -12,5 +12,7 @@ namespace data_access.Entities
         public string Name { get; set; }
         public List<ExpenseItem> Items { get; set; }
         public List<Expense> Expenses { get; set; }
+        public decimal PlaneExpense { get; set; }
+        public decimal ActuallyExpense { get; set; }
     }
 }

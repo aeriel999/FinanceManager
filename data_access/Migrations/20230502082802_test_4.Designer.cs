@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_access;
 
@@ -11,9 +12,11 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    partial class FinancialManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230502082802_test_4")]
+    partial class test_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,23 +87,23 @@ namespace data_access.Migrations
                         new
                         {
                             Id = 1,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 2500m,
                             Name = "Utility payments",
-                            PlaneExpense = 0m
+                            PlaneExpense = 5000m
                         },
                         new
                         {
                             Id = 2,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 2500m,
                             Name = "Products",
-                            PlaneExpense = 0m
+                            PlaneExpense = 3000m
                         },
                         new
                         {
                             Id = 3,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 1200m,
                             Name = "Money for the road",
-                            PlaneExpense = 0m
+                            PlaneExpense = 1500m
                         });
                 });
 
@@ -113,7 +116,7 @@ namespace data_access.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -201,21 +204,21 @@ namespace data_access.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 0m,
+                            Amount = 2500m,
                             CategoryId = 1,
                             Name = "Electricity"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 0m,
+                            Amount = 2500m,
                             CategoryId = 2,
                             Name = "Products for the home"
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 0m,
+                            Amount = 1200m,
                             CategoryId = 3,
                             Name = "Fuel for cars"
                         });

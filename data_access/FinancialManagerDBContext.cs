@@ -17,12 +17,7 @@ namespace data_access
     public class FinancialManagerDBContext:DbContext
     {
 
-        public string Connection { get; set; }
-
-        public FinancialManagerDBContext(string connection)
-        {
-            Connection=connection;
-        }
+      
 
         public DbSet<Category_for_expense> Categories_For_Expense { get; set; }
         public DbSet<Expense> Expenses { get; set; }
@@ -32,16 +27,13 @@ namespace data_access
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
-            //string connection = ConfigurationManager.ConnectionStrings["FinancManagerConnectionString"].ConnectionString;
-
             base.OnConfiguring(optionsBuilder);
-            /* optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
                                            Initial Catalog = FinancialManager_Db;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
-                                           ApplicationIntent=ReadWrite;MultiSubnetFailover=False");*/
-            optionsBuilder.UseSqlServer(Connection);
+                                           ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+         
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,6 +55,8 @@ namespace data_access
             modelBuilder.Entity<Expense>().ToTable(e => e.HasCheckConstraint("Amount", "Amount >= 0"));
             modelBuilder.Entity<ExpenseItem>().HasKey(ei => ei.Id);
             modelBuilder.Entity<ExpenseItem>().Property(ei => ei.Name).HasMaxLength(100).IsRequired();
+            modelBuilder.Entity<ExpenseItem>().Property(ei=>ei.Amount).IsRequired();
+            modelBuilder.Entity<ExpenseItem>().ToTable(ei => ei.HasCheckConstraint("Amount", "Amount>= 0"));
             modelBuilder.Entity<Income>().HasKey(i=>i.Id);
             modelBuilder.Entity<Income>().Property(i=>i.Month).HasMaxLength(50).IsRequired();
             modelBuilder.Entity<Income>().Property(i=>i.Year).IsRequired();
@@ -75,6 +69,10 @@ namespace data_access
             modelBuilder.Entity<Category_for_expense>().HasMany(c => c.Expenses).WithOne(c => c.category).HasForeignKey(c => c.CategoryId);
             modelBuilder.Entity<Income>().HasOne(i => i.category).WithMany(i => i.Incomes).HasForeignKey(i=>i.IncomeCategoryId);
 
+            modelBuilder.Entity<Category_for_expense>().Property(c=>c.PlaneExpense).HasColumnType("money");
+            modelBuilder.Entity<Category_for_expense>().Property(c=>c.ActuallyExpense).HasColumnType("money");
+            modelBuilder.Entity<ExpenseItem>().Property(e => e.Amount).HasColumnType("money");
+            modelBuilder.Entity<Expense>().Property(e => e.Amount).HasColumnType("money");
 
         }
 
