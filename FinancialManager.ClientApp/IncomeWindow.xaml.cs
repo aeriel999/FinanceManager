@@ -18,8 +18,10 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class IncomeWindow : Window
 {
+    private ViewModel _model = new ViewModel();
     public IncomeWindow()
     {
         InitializeComponent();
+        DataContext = _model;
     }
 }

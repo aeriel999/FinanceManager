@@ -5,8 +5,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinancialManager.ClientApp"
         mc:Ignorable="d"
+          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="IncomeWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <materialDesign:ColorZone DockPanel.Dock="Top"
+  Mode="Custom"
+  Background="Black"
+  Foreground="White"
+  Padding="16 0"
+  ClipToBounds="False">
+            <StackPanel
+    Orientation="Horizontal">
+                <DatePicker SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Margin="2,5"></DatePicker>
+                <TextBlock VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
+                    <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
+                <materialDesign:Badged  Margin="2,5"
+      Badge="1 changed"
+      VerticalAlignment="Center">
+                    <Button Margin="5">
+                        Save
+                    </Button>
+                </materialDesign:Badged>
+            </StackPanel>
+        </materialDesign:ColorZone>
+
+        <ListBox DockPanel.Dock="Top" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem >
+                        <StackPanel>
+
+
+                            <ListBox HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ListBoxItem>
+                                        <Grid HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="10*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                                <TextBlock HorizontalAlignment="Left" Margin="5" Grid.Column="0" Text="{Binding Name}"
+                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
+                                                             Text="{Binding CostPlane, Mode=TwoWay}"
+                                                             />
+                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
+                                        </Grid>
+                                        
+                                    </ListBoxItem>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+
+                        </StackPanel>
+                    </ListBoxItem >
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+    </DockPanel>
 </Window>
