@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ResponseWindow" Height="450" Width="800">
+        Title="ResponseWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
               Mode="Custom"
@@ -32,6 +32,7 @@
                         Save
                     </Button>
                 </materialDesign:Badged>
+                <Button Margin="5" Click="Button_Click_1">Add Category</Button>
             </StackPanel>
         </materialDesign:ColorZone>
         <ListBox DockPanel.Dock="Top" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >

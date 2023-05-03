@@ -25,7 +25,6 @@ namespace FinancialManager.ClientApp
         public ResponseWindow()
         {
             InitializeComponent();
-
             DataContext = _model;
         }
 
@@ -49,18 +48,25 @@ namespace FinancialManager.ClientApp
             _isBusy = true;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private  void Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                await _model.AddItemAsync(new ExpenseItem() { Name = "New name11", Amount = 500 });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            // _model.AddItem(new ExpenseItem() { Name = "ffffffffffffff", Amount = 300 });
+
+            var vin = new AddItemWindow();
+
+            vin.Show();
+
+            this.Close();
         }
 
-       
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            _model.AddCaterory(new Category_for_expense() { Name = "New 5555555555555" });
+        }
     }
 }

@@ -16,5 +16,15 @@ namespace data_access.Entities
         public List<Expense> Expenses { get; set; }
         public decimal PlaneExpense { get; set; }
         public decimal ActuallyExpense { get; set; }
+
+        public Category_for_expense()
+        {
+            Items = new List<ExpenseItem>();
+        }
+
+        public void AddItenInCat(ExpenseItem i)
+        {
+            Items.Add(i);
+        }
     }
 }
