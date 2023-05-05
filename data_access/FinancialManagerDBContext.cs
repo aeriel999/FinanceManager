@@ -19,6 +19,7 @@ namespace data_access
 
         public string Connection { get; set; }
 
+
         public FinancialManagerDBContext(string connection)
         {
             Connection=connection;
@@ -36,12 +37,15 @@ namespace data_access
             //string connection = ConfigurationManager.ConnectionStrings["FinancManagerConnectionString"].ConnectionString;
 
             base.OnConfiguring(optionsBuilder);
+
+           // optionsBuilder.UseSqlServer(@"Data Source=HOME-PC\SQLEXPRESS; Initial Catalog = FinancialManager_Db;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+           
             /* optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
                                            Initial Catalog = FinancialManager_Db;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
                                            ApplicationIntent=ReadWrite;MultiSubnetFailover=False");*/
-            optionsBuilder.UseSqlServer(Connection);
+             optionsBuilder.UseSqlServer(Connection);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
