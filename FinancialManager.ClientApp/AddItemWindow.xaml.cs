@@ -21,12 +21,14 @@ namespace FinancialManager.ClientApp
     public partial class AddItemWindow : Window
     {
         private ViewModel _viewModel = new ViewModel();
-
-        public AddItemWindow()
+        private int _id;
+        public AddItemWindow(int id)
         {
             InitializeComponent();
             ItemAmountTB.Text = "0";
+            _id = id;
         }
+
 
         private decimal MakePrice()
         {
@@ -48,7 +50,7 @@ namespace FinancialManager.ClientApp
             decimal price = MakePrice();
 
             if (ItemNameTB.Text.Length > 3 && price >= 0)
-                _viewModel.AddItem(new ExpenseItem() { Name = ItemNameTB.Text , Amount = price});
+                _viewModel.AddItem(new ExpenseItem() { Name = ItemNameTB.Text , Amount = price, CategoryId = _id});
 
             this.Close();
         }

@@ -63,7 +63,7 @@
                 <DataTemplate>
                     <ListBoxItem >
                         <StackPanel>
-                            <Expander HorizontalAlignment="Stretch" IsExpanded="{Binding IsChecked}">
+                            <Expander HorizontalAlignment="Stretch" IsExpanded="{Binding IsChecked, Mode=TwoWay}">
                                 <Expander.Header>
                                     <Grid >
                                         <Grid.ColumnDefinitions>
@@ -71,7 +71,7 @@
                                             <ColumnDefinition Width="7*"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Margin="5"></CheckBox>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5"></CheckBox>
                                         <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Name="CategoryNameTB"
                                                   IsEnabled="{Binding CanEdit}" Margin="5"
                                                  TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>

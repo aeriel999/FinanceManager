@@ -63,11 +63,20 @@ namespace FinancialManager.ClientApp
 
         private void AddItemInCategoriesBtnClick(object sender, RoutedEventArgs e)
         {
-            var itemWindow = new AddItemWindow();
+            int id = _model.GetCheckedId();
 
-            itemWindow.Show();
+            if (id >= 0)
+            {
+                var itemWindow = new AddItemWindow(_model.GetCheckedId());
 
-            this.Close();
+                itemWindow.Show();
+
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Try againe");
+            }
         }
     }
 }

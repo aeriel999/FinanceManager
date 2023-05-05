@@ -80,18 +80,19 @@ namespace FinancialManager.ClientApp
 
         public void AddItem(ExpenseItem i)
         {
-            int id = GetChecked();
-
-            if (id >= 0)
+            try
             {
-                i.CategoryId = id;
-                _dailyCategoryExpenses.ElementAt(id).AddItenInCat(i);
+                _dailyCategoryExpenses.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
                 _dBContext.ExpenseItems.Add(i);
                 _dBContext.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private int GetChecked()
+        public int GetCheckedId()
         {
             int id = -1;
 

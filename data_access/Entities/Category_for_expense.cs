@@ -29,7 +29,6 @@ namespace data_access.Entities
 
         public decimal PlaneExpense { get; set; }
 
-
         [NotMapped]
         public bool IsChecked { get; set; }
 
