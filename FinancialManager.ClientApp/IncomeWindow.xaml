@@ -80,9 +80,5 @@
                 </ListBox>
             </DataGridColumnHeader>
         </Grid>
-
-
-
-
     </DockPanel>
 </Window>
