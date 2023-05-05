@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,15 +14,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace FinancialManager.ClientApp;
-/// <summary>
-/// Interaction logic for IncomeWindow.xaml
-/// </summary>
+
 public partial class IncomeWindow : Window
 {
+    public ObservableCollection<string> Products { get; set; }
     private ViewModel _model = new ViewModel();
     public IncomeWindow()
     {
         InitializeComponent();
-        DataContext = _model;
+        Products = new ObservableCollection<string> { "Product 1", "Product 2", "Product 3" };
+        DataContext = this;
     }
 }
