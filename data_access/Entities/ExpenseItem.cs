@@ -11,6 +11,7 @@ namespace data_access.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
+        public decimal Amount { get; set; }
         public Category_for_expense category { get; set; }
     }
 }

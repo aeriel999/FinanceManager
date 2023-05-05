@@ -34,5 +34,11 @@ public partial class MainWindow : Window
         //this.Close();
     }
 
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        
+        IncomeWindow incomeWindow = new IncomeWindow();
+        incomeWindow.Show();
+    }
 }
 
