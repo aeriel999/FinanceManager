@@ -44,7 +44,7 @@ public partial class MainWindow : Window
 
     private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.SaveAmount();
+        _viewModel.SaveChanges();
     }
 }
 

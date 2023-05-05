@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ResponseWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="ResponseWindow" Height="700" Width="1000" Loaded="Window_Loaded">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
               Mode="Custom"
@@ -21,33 +21,60 @@
               Foreground="White"
               Padding="16 0"
               ClipToBounds="False">
-            <StackPanel Orientation="Horizontal">
-                <DatePicker SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Margin="2,5"></DatePicker>
-                <TextBlock VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
-                    <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
-                <materialDesign:Badged  Margin="2,5"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <DatePicker Grid.Column="0" SelectedDate="{Binding Date, Mode=OneWay}" 
+                            SelectedDateFormat="Long" Margin="2,5"></DatePicker>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
+                    <Run Text="{Binding Amount, StringFormat='0,0.00', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/> UAH</TextBlock>
+                <Button Grid.Column="2" Margin="5" Click="EditExpenseWindowBtnClick">Edit</Button>
+                <materialDesign:Badged  Margin="2,5" Grid.Column="3" HorizontalAlignment="Center"
                           Badge="{Binding NumberOfChanges}"
                           VerticalAlignment="Center">
                     <Button Margin="5" Click="SaveResponseAmountClick">
                         Save
                     </Button>
                 </materialDesign:Badged>
-                <Button Margin="5" Click="Button_Click_1">Add Category</Button>
-            </StackPanel>
+                <Button Margin="5" Click="Button_Click_1" Grid.Column="4">Add Category</Button>
+                <Button Margin="5" Click="Button_Click_2" Grid.Column="5">Exit</Button>
+            </Grid>
         </materialDesign:ColorZone>
-        <ListBox DockPanel.Dock="Top" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >
+        <ListBox DockPanel.Dock="Top" Name="CategoriesLB"
+                 ItemsSource="{Binding DailyCategoryExpenses, Mode=TwoWay}" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <ListBoxItem >
                         <StackPanel>
-                            <Expander HorizontalAlignment="Stretch"
-                              Header="{Binding Name}">
-                                <DockPanel MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <Expander HorizontalAlignment="Stretch" IsExpanded="{Binding IsChecked}">
+                                <Expander.Header>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="7*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" Margin="5"></CheckBox>
+                                        <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Name="CategoryNameTB"
+                                                  IsEnabled="{Binding CanEdit}" Margin="5"
+                                                 TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
+                                        <TextBlock Grid.Column="2" Margin="5" VerticalAlignment="Bottom"> Amount: 
+                                            <Run Text="{Binding GetPlaneExpense, StringFormat='0,0.00', Mode=OneWay,
+                                                UpdateSourceTrigger=PropertyChanged}" /> UAH</TextBlock>
+                                    </Grid>
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <DockPanel MaxHeight="350" ScrollViewer.VerticalScrollBarVisibility="Visible">
                                         <Grid DockPanel.Dock="Top">
-                                            <Button Click="Button_Click">Add</Button>
+                                            <Button Click="EditCategoryNameBtnClick">Add</Button>
                                         </Grid>
-
-                                    <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" 
+                                        <ListBox Name="ItemsLB" HorizontalContentAlignment="Stretch" 
                                          Background="#FFC1D291" Foreground="#FF2C2626"
                                          ItemsSource="{Binding Items, Mode=TwoWay}"  >
                                             <ListBox.ItemTemplate>
@@ -60,9 +87,10 @@
                                                                 <ColumnDefinition Width="2*"/>
                                                             </Grid.ColumnDefinitions>
                                                             <TextBox HorizontalAlignment="Left" Margin="5" Grid.Column="0" 
-                                                                   Text="{Binding Name, Mode=TwoWay}"
-                                                            />
-                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
+                                                                   IsEnabled="{Binding CanEdit}" Text="{Binding Name, Mode=TwoWay}"
+                                                                     TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
+                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5" 
+                                                                      IsEnabled="{Binding CanEdit}"
                                                               Text="{Binding Amount, StringFormat='0,0.00', Mode=TwoWay}" 
                                                               TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
                                                             <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
@@ -71,8 +99,9 @@
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                    
-                                </DockPanel>
+
+                                    </DockPanel>
+                                </Expander.Content>
                             </Expander>
                             <Border
                                   Background="{DynamicResource MaterialDesignDivider}"
