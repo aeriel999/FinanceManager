@@ -83,7 +83,6 @@ namespace FinancialManager.ClientApp
             try
             {
                 _dailyCategoryExpenses.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
-                _dBContext.ExpenseItems.Add(i);
                 _dBContext.SaveChanges();
             }
             catch (Exception ex)
@@ -115,6 +114,22 @@ namespace FinancialManager.ClientApp
                 {
                     item.CanEdit = canEdit;
                 }
+            }
+        }
+
+        public void DeleteCategory()
+        {
+            try
+            {
+                var category = _dailyCategoryExpenses.Single(c => c.Id == GetCheckedId());
+
+                _dailyCategoryExpenses.Remove(category);
+                _dBContext.Categories_For_Expense.Remove(category);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

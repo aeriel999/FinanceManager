@@ -70,6 +70,7 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="7*"/>
                                             <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
                                         <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5"></CheckBox>
                                         <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Name="CategoryNameTB"
@@ -78,6 +79,8 @@
                                         <TextBlock Grid.Column="2" Margin="5" VerticalAlignment="Bottom"> Amount: 
                                             <Run Text="{Binding GetPlaneExpense, StringFormat='0,0.00', Mode=OneWay,
                                                 UpdateSourceTrigger=PropertyChanged}" /> UAH</TextBlock>
+                                        <Button Grid.Column="3" Click="DeleteCategoriesBtnClick" 
+                                                IsEnabled="{Binding IsChecked, Mode=TwoWay}">Delete</Button>
                                     </Grid>
                                 </Expander.Header>
                                 <Expander.Content>

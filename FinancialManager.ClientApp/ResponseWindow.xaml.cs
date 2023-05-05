@@ -78,5 +78,15 @@ namespace FinancialManager.ClientApp
                 MessageBox.Show("Try againe");
             }
         }
+
+        private void DeleteCategoriesBtnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you shure that you want delete category with all items?", "Confirmation",MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _model.DeleteCategory();
+            }
+        }
     }
 }
