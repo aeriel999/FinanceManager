@@ -17,18 +17,15 @@ namespace FinancialManager.ClientApp
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
 
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
-
         private decimal _amount;
 
         public ViewModel()
         {
             _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
                                                                                                 .Include(c => c.Items));
-
-            DailyCategoryExpenses = _dailyCategoryExpenses;
         }
 
-        public IEnumerable<Category_for_expense> DailyCategoryExpenses { get; set; }
+        public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
 
         public string Date => DateTime.Now.ToString();
 
@@ -77,26 +74,34 @@ namespace FinancialManager.ClientApp
         public void AddCaterory(Category_for_expense i)
         {
             _dailyCategoryExpenses.Add(i);
+            _dBContext.Categories_For_Expense.Add(i);
             _dBContext.SaveChanges();
         }
 
         public void AddItem(ExpenseItem i)
         {
-            _dailyCategoryExpenses.ElementAt(1).AddItenInCat(i);
-            _dBContext.SaveChanges();
+            int id = GetChecked();
+
+            if (id >= 0)
+            {
+                i.CategoryId = id;
+                _dailyCategoryExpenses.ElementAt(id).AddItenInCat(i);
+                _dBContext.ExpenseItems.Add(i);
+                _dBContext.SaveChanges();
+            }
         }
 
-        private Category_for_expense GetChecked()
+        private int GetChecked()
         {
-            var category = new Category_for_expense();
+            int id = -1;
 
             foreach (var item in _dailyCategoryExpenses)
             {
                 if (item.IsChecked)
-                    return item;
+                    return item.Id;
             }
 
-            return category;
+            return id;
         }
 
         public void SetEditingProperty(bool canEdit)

@@ -20,20 +20,43 @@ namespace FinancialManager.ClientApp
     /// </summary>
     public partial class AddItemWindow : Window
     {
-        ViewModel _viewModel = new ViewModel();
+        private ViewModel _viewModel = new ViewModel();
+
         public AddItemWindow()
         {
             InitializeComponent();
+            ItemAmountTB.Text = "0";
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private decimal MakePrice()
         {
-            _viewModel.AddItem(new ExpenseItem() { Name = "kkkkk", Amount = 1 });
+            decimal price = 0;
 
-            var win = new ResponseWindow();
-            win.Show();
+            try
+            {
+                price = decimal.Parse(ItemAmountTB.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return price;
+        }
+        private void AddINewtemBtnClick(object sender, RoutedEventArgs e)
+        {
+            decimal price = MakePrice();
+
+            if (ItemNameTB.Text.Length > 3 && price >= 0)
+                _viewModel.AddItem(new ExpenseItem() { Name = ItemNameTB.Text , Amount = price});
 
             this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            var responseWindow = new ResponseWindow();
+            responseWindow.Show();
         }
     }
 }

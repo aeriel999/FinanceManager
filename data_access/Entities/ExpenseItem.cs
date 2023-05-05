@@ -11,6 +11,14 @@ namespace data_access.Entities
     [AddINotifyPropertyChangedInterface]
     public class ExpenseItem
     {
+        //public ExpenseItem() { }
+
+        //public ExpenseItem(string name, decimal amount)
+        //{
+        //    Name = name;
+        //    Amount = amount;
+        //}
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }

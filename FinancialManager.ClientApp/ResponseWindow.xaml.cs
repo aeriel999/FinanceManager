@@ -16,7 +16,7 @@ namespace FinancialManager.ClientApp
             DataContext = _model;
         }
 
-        private void SaveResponseAmountClick(object sender, RoutedEventArgs e)
+        private void SaveResponseChangesClick(object sender, RoutedEventArgs e)
         {
             _model.SaveChanges();
             _model.SetEditingProperty(false);
@@ -36,42 +36,38 @@ namespace FinancialManager.ClientApp
             _isBusy = true;
         }
 
-        private  void Button_Click(object sender, RoutedEventArgs e)
-        {
-             _model.AddItem(new ExpenseItem() { Name = "ffffffffffffff", Amount = 300 });
+        //private  void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //     _model.AddItem(new ExpenseItem() { Name = "ffffffffffffff", Amount = 300 });
 
-            //var vin = new AddItemWindow();
-
-            //vin.Show();
-
-            //this.Close();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        
+        //}
 
         private void EditExpenseWindowBtnClick(object sender, RoutedEventArgs e)
         {
-            // _model.AddCaterory(new Category_for_expense("New 5555555555555"));
-
             _model.SetEditingProperty(true);
         }
 
-        private void EditCategoryNameBtnClick(object sender, RoutedEventArgs e)
+        private void AddCategoryBtnClick(object sender, RoutedEventArgs e)
         {
-            
+            if (NewCategoryNamTB.Text.Length > 3)
+                _model.AddCaterory(new Category_for_expense(NewCategoryNamTB.Text));
+            else
+                MessageBox.Show("Enter name for new category");
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void AddItemInCategoriesBtnClick(object sender, RoutedEventArgs e)
         {
+            var itemWindow = new AddItemWindow();
 
+            itemWindow.Show();
+
+            this.Close();
         }
     }
 }

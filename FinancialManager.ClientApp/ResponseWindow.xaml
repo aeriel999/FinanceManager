@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ResponseWindow" Height="700" Width="1000" Loaded="Window_Loaded">
+        Title="ResponseWindow" Height="700" Width="1000">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
               Mode="Custom"
@@ -23,11 +23,10 @@
               ClipToBounds="False">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DatePicker Grid.Column="0" SelectedDate="{Binding Date, Mode=OneWay}" 
@@ -38,16 +37,28 @@
                 <materialDesign:Badged  Margin="2,5" Grid.Column="3" HorizontalAlignment="Center"
                           Badge="{Binding NumberOfChanges}"
                           VerticalAlignment="Center">
-                    <Button Margin="5" Click="SaveResponseAmountClick">
+                    <Button Margin="5" Click="SaveResponseChangesClick">
                         Save
                     </Button>
                 </materialDesign:Badged>
-                <Button Margin="5" Click="Button_Click_1" Grid.Column="4">Add Category</Button>
-                <Button Margin="5" Click="Button_Click_2" Grid.Column="5">Exit</Button>
+               
+                <Button Margin="5" Click="CloseBtnClick" Grid.Column="4">Exit</Button>
             </Grid>
         </materialDesign:ColorZone>
+        <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="5">
+            <Grid Margin="5" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock  Grid.Column="0" VerticalAlignment="Bottom" FontSize="16">Enter new category name:</TextBlock>
+                <TextBox Name="NewCategoryNamTB" Grid.Column="1" Margin="5"/>
+                <Button Margin="5" Click="AddCategoryBtnClick" Grid.Column="4">Add Category</Button>
+            </Grid>
+        </Border>
         <ListBox DockPanel.Dock="Top" Name="CategoriesLB"
-                 ItemsSource="{Binding DailyCategoryExpenses, Mode=TwoWay}" HorizontalContentAlignment="Stretch" >
+                 ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <ListBoxItem >
@@ -72,7 +83,8 @@
                                 <Expander.Content>
                                     <DockPanel MaxHeight="350" ScrollViewer.VerticalScrollBarVisibility="Visible">
                                         <Grid DockPanel.Dock="Top">
-                                            <Button Click="EditCategoryNameBtnClick">Add</Button>
+                                            <Button Click="AddItemInCategoriesBtnClick" HorizontalAlignment="Center" Margin="5"
+                                                    Width="150">Add item of response</Button>
                                         </Grid>
                                         <ListBox Name="ItemsLB" HorizontalContentAlignment="Stretch" 
                                          Background="#FFC1D291" Foreground="#FF2C2626"
