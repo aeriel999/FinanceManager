@@ -16,6 +16,7 @@ namespace data_access
 {
     public class FinancialManagerDBContext:DbContext
     {
+
         public DbSet<Category_for_expense> Categories_For_Expense { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
@@ -25,12 +26,13 @@ namespace data_access
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Data Source=.;
+
                                            Initial Catalog = FinancialManager_Db;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
                                            ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
          
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
