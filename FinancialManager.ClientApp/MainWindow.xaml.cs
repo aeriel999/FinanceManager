@@ -42,9 +42,6 @@ public partial class MainWindow : Window
         incomeWindow.Show();
     }
 
-    private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
-    {
-        _viewModel.SaveChanges();
     }
 }
 
