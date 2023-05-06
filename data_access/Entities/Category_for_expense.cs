@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace data_access.Entities
 {
     [AddINotifyPropertyChangedInterface]
-    public class Category_for_expense : IEnumerable
+    public class Category_for_expense 
     {
         private decimal _getPlaneExpense;
 
@@ -58,11 +58,6 @@ namespace data_access.Entities
         public void UpdateAmount()
         {
             GetPlaneExpense = GetPlaneAmount();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
         }
     }
 }
