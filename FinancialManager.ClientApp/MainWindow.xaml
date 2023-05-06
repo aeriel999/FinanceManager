@@ -43,7 +43,9 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <DatePicker  Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Style="{StaticResource MaterialDesignOutlinedDatePicker}" FontFamily="Consolas" FontSize="15" BorderBrush="{DynamicResource PrimaryHueLightBrush}"/>
+            <DatePicker  Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}"
+                         SelectedDateFormat="Long" Style="{StaticResource MaterialDesignOutlinedDatePicker}" 
+                         FontFamily="Consolas" FontSize="15" BorderBrush="{DynamicResource PrimaryHueLightBrush}"/>
 
             <Button  Grid.Column="3"  Margin="10,0,10,0"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  
                      Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
@@ -51,7 +53,7 @@
                 Expenses</Button>
 
 
-            <TextBlock Grid.Column="1">Plane: <Run Text="{Binding CostPlane}"></Run>UAH / Spent: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
+            <TextBlock Grid.Column="1">Plane: <Run Text="{Binding Amount, Mode=OneWay}"></Run>UAH / Spent: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
             <TextBlock Width="Auto" Grid.Row="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="10" FontSize="35" FontWeight="Bold">35688 UAH</TextBlock>
             <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
                     Height="40" FontSize="22" FontFamily="Consolas" Width="Auto" Click="OpenIncomeWindowBtnClick"

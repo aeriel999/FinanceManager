@@ -17,6 +17,7 @@ namespace FinancialManager.ClientApp
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
 
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
+
         private decimal _amount;
 
         public ViewModel()
