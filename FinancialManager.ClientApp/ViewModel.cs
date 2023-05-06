@@ -1,100 +1,141 @@
-﻿using PropertyChanged;
+﻿using data_access;
+using data_access.Entities;
+using MaterialDesignThemes.Wpf;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace FinancialManager.ClientApp
 {
     [AddINotifyPropertyChangedInterface]
-    public class ViewModel
+    public class ViewModel : IDisposable
     {
-        private ObservableCollection<DailyCategoryExpense> _dailyCategoryExpenses = new ObservableCollection<DailyCategoryExpense>();
+        private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
 
-        public IEnumerable<DailyCategoryExpense> DailyCategoryExpenses => _dailyCategoryExpenses;
+        private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
+        private decimal _amount;
 
         public ViewModel()
         {
-            _dailyCategoryExpenses.Add(new DailyCategoryExpense("Product"));
-            _dailyCategoryExpenses.Add(new DailyCategoryExpense("House"));
-            _dailyCategoryExpenses.Add(new DailyCategoryExpense("Pets"));
-            _dailyCategoryExpenses.Add(new DailyCategoryExpense("Childs"));
+            _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
+                                                                                                .Include(c => c.Items));
         }
 
-        public string Date  => DateTime.Now.ToString();
+        public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
 
-        public int NumberOfChanges = 1;
+        public string Date => DateTime.Now.ToString();
 
-        public decimal Amount => GetAmount();
+        public int NumberOfChanges { get; set; }
+
+        public decimal Amount { get => GetAmount(); private set => _amount = value; }
 
         private decimal GetAmount()
-        { 
+        {
             decimal amount = 0;
 
-            foreach (TestCategory c in _dailyCategoryExpenses)
+            foreach (var c in _dailyCategoryExpenses)
             {
-                foreach (var item in c.Items)
-                {
-                    amount += item.CostPlane;
-                }
+                amount += c.GetPlaneExpense;
             }
 
             return amount;
         }
 
-        public void SaveAmount()
-        { 
-            //Code for saving changes in DB
-        }
-    }
-
-    [AddINotifyPropertyChangedInterface]
-    public class DailyCategoryExpense : TestCategory
-    {
-        public DailyCategoryExpense(string name) : base(name) { }
-
-        public bool IsChecked { get; set; }
-
-        public decimal Input { get; set; }
-
-    }
-
-    public class TestCategory
-    {
-        public TestCategory(string name)
+        private void UpDateAmount()
         {
-            Name = name;
+            Amount = GetAmount();
 
-            Items.Add(new TestItem("item1", 500));
-            Items.Add(new TestItem("item2", 300));
-            Items.Add(new TestItem("item3", 700));
+            foreach (var c in _dailyCategoryExpenses)
+            {
+                c.UpdateAmount();
+            }
         }
-        public int Id { get; set; }
 
-        public string Name { get; set; }
-
-        public List<TestItem> Items { get; set; } = new List<TestItem>();
-    }
-
-    [AddINotifyPropertyChangedInterface]
-
-    public class TestItem
-    {
-        public TestItem(string name, decimal cost)
+        public void SaveChanges()
         {
-            Name = name;
-            CostPlane = cost;
+            try
+            {
+                _dBContext.SaveChanges();
+
+                UpDateAmount();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            NumberOfChanges = 0;
         }
-        public int Id { get; set; }
 
-        public string Name { get; set; }
+        public void AddCaterory(Category_for_expense i)
+        {
+            _dailyCategoryExpenses.Add(i);
+            _dBContext.Categories_For_Expense.Add(i);
+            _dBContext.SaveChanges();
+        }
 
-        public int CategoryId { get; set; }
+        public void AddItem(ExpenseItem i)
+        {
+            try
+            {
+                _dailyCategoryExpenses.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
-        public decimal CostPlane { get; set; }
+        public int GetCheckedId()
+        {
+            int id = -1;
 
-        public decimal CostSpent { get; set; }
+            foreach (var item in _dailyCategoryExpenses)
+            {
+                if (item.IsChecked)
+                    return item.Id;
+            }
+
+            return id;
+        }
+
+        public void SetEditingProperty(bool canEdit)
+        {
+            foreach (var c in _dailyCategoryExpenses)
+            {
+                c.CanEdit = canEdit;
+
+                foreach (var item in c.Items)
+                {
+                    item.CanEdit = canEdit;
+                }
+            }
+        }
+
+        public void DeleteCategory()
+        {
+            try
+            {
+                var category = _dailyCategoryExpenses.Single(c => c.Id == GetCheckedId());
+
+                _dailyCategoryExpenses.Remove(category);
+                _dBContext.Categories_For_Expense.Remove(category);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void Dispose()
+        {
+            _dBContext.Dispose();
+        }
     }
 }

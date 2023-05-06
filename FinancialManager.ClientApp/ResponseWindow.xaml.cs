@@ -1,35 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using data_access.Entities;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FinancialManager.ClientApp
 {
-    /// <summary>
-    /// Interaction logic for ResponseWindow.xaml
-    /// </summary>
     public partial class ResponseWindow : Window
     {
         private ViewModel _model = new ViewModel();
+
+        private bool _isBusy = true;
+
         public ResponseWindow()
         {
             InitializeComponent();
-
             DataContext = _model;
         }
 
-        private void SaveResponseAmountClick(object sender, RoutedEventArgs e)
+        private void SaveResponseChangesClick(object sender, RoutedEventArgs e)
         {
-            _model.SaveAmount();
+            _model.SaveChanges();
+            _model.SetEditingProperty(false);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isBusy)
+            {
+                _model.NumberOfChanges++;
+                _isBusy = false;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _isBusy = true;
+        }
+
+        //private  void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //     _model.AddItem(new ExpenseItem() { Name = "ffffffffffffff", Amount = 300 });
+
+        
+        //}
+
+        private void EditExpenseWindowBtnClick(object sender, RoutedEventArgs e)
+        {
+            _model.SetEditingProperty(true);
+        }
+
+        private void AddCategoryBtnClick(object sender, RoutedEventArgs e)
+        {
+            if (NewCategoryNamTB.Text.Length > 3)
+                _model.AddCaterory(new Category_for_expense(NewCategoryNamTB.Text));
+            else
+                MessageBox.Show("Enter name for new category");
+        }
+
+        private void CloseBtnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AddItemInCategoriesBtnClick(object sender, RoutedEventArgs e)
+        {
+            int id = _model.GetCheckedId();
+
+            if (id >= 0)
+            {
+                var itemWindow = new AddItemWindow(_model.GetCheckedId());
+
+                itemWindow.Show();
+
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Try againe");
+            }
+        }
+
+        private void DeleteCategoriesBtnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you shure that you want delete category with all items?", "Confirmation",MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _model.DeleteCategory();
+            }
         }
     }
 }

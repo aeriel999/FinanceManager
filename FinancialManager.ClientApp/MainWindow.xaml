@@ -42,18 +42,6 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-
-            <DatePicker  Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Style="{StaticResource MaterialDesignOutlinedDatePicker}" FontFamily="Consolas" FontSize="15" BorderBrush="{DynamicResource PrimaryHueLightBrush}"/>
-
-            <Button  Grid.Column="3"  Margin="10,0,10,0"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
-                    materialDesign:ButtonAssist.CornerRadius="20" VerticalAlignment="Stretch" >Expenses</Button>
-
-
-            <TextBlock Grid.Column="1">Plane: <Run Text="{Binding CostPlane}"></Run>UAH / Spent: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
-            <TextBlock Width="Auto" Grid.Row="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="10" FontSize="35" FontWeight="Bold">35688 UAH</TextBlock>
-            <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
-
-           
                     materialDesign:ButtonAssist.CornerRadius="20">Incomes</Button>
             <TextBlock Width="Auto" Grid.Column="1" Grid.Row="1">Plane: <Run Text="{Binding CostPlane}"></Run>UAH / Already get: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
 
@@ -92,15 +80,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Border Grid.Column="1" Background="AliceBlue"  Width="Auto" Height="Auto" Margin="20"></Border>
-        </Grid>
-        <Grid Grid.Row="2" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="*"></ColumnDefinition>
-                <ColumnDefinition  Width="*"></ColumnDefinition>
-                <ColumnDefinition  Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
+
                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" > Add </Button>
             <Button Grid.Column="4" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10"> More Diagrams </Button>

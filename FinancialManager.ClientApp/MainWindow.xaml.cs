@@ -21,24 +21,21 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private ViewModel _model = new ViewModel();
-    //FinancialManagerDBContext dBContext = new FinancialManagerDBContext();
-    public MainWindow()
+
+    private void OpenResponseWindowBtnClick(object sender, RoutedEventArgs e)
     {
-        InitializeComponent();
-        DataContext = _model;
-        //var win = new ResponseWindow();
+        var responseWindow = new ResponseWindow();
 
-        //win.Show();
-
-        //this.Close();
+        responseWindow.Show();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void OpenIncomeWindowBtnClick(object sender, RoutedEventArgs e)
     {
-        
-        IncomeWindow incomeWindow = new IncomeWindow();
+        var incomeWindow = new IncomeWindow();
+
         incomeWindow.Show();
+    }
+
     }
 }
 
