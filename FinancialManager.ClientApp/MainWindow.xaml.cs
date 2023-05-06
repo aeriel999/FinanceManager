@@ -1,4 +1,5 @@
-﻿using System;
+﻿using data_access;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +21,12 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private ViewModel _model = new ViewModel();
+    //FinancialManagerDBContext dBContext = new FinancialManagerDBContext();
     public MainWindow()
     {
         InitializeComponent();
-        for (int i = 0; i < 10; i++)
-        {
-            LB.Items.Add("");
-        }
-
+        DataContext = _model;
         //var win = new ResponseWindow();
 
         //win.Show();

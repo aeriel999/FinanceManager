@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinancialManager.ClientApp"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:ViewModel}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -15,39 +16,55 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="700" Width="1000">
     <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Justify" ></Setter>
+            <Setter Property="VerticalAlignment" Value="Center" ></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch" ></Setter>
             <Setter Property="FontSize" Value="22"></Setter>
             <Setter Property="FontFamily" Value="Consolas"></Setter>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightBrush}"></Setter>
             <Setter Property="Margin" Value="15"></Setter>
         </Style>
     </Window.Resources>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition  Width="Auto"></ColumnDefinition>
                 <ColumnDefinition  Width="Auto"></ColumnDefinition>
-                <ColumnDefinition  Width="Auto"></ColumnDefinition>
+                <ColumnDefinition  Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Margin="15,15,0,15" Grid.ColumnSpan="2" FontSize="22" HorizontalContentAlignment="Center" Background="{DynamicResource PrimaryHueLightBrush }" Foreground="{DynamicResource MaterialDesignCardBackground}">28.04.2023</Label>
-            <Button Margin="10,0,10,0" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas"
-                    materialDesign:ButtonAssist.CornerRadius="20">Expenses</Button>
-            <Label Grid.Column="2" >Plane: 15000 UAH / Spent 1000 UAH</Label>
-            <Label Grid.Row="1" FontSize="20">Balance:</Label>
-            <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="0" FontSize="35" FontWeight="Bold">35688 UAH</Label>
-            <Button Click="Button_Click" Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" 
+
+            <DatePicker  Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Style="{StaticResource MaterialDesignOutlinedDatePicker}" FontFamily="Consolas" FontSize="15" BorderBrush="{DynamicResource PrimaryHueLightBrush}"/>
+
+            <Button  Grid.Column="3"  Margin="10,0,10,0"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
+                    materialDesign:ButtonAssist.CornerRadius="20" VerticalAlignment="Stretch" >Expenses</Button>
+
+
+            <TextBlock Grid.Column="1">Plane: <Run Text="{Binding CostPlane}"></Run>UAH / Spent: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
+            <TextBlock Width="Auto" Grid.Row="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Margin="10" FontSize="35" FontWeight="Bold">35688 UAH</TextBlock>
+            <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
+
+           
                     materialDesign:ButtonAssist.CornerRadius="20">Incomes</Button>
-            <Label Grid.Column="2" Grid.Row="1" >Alteady get: 13000 UAH / Plane 10000 UAH</Label>
-        </Grid>
-        <DockPanel DockPanel.Dock="Top">
-            <ListBox x:Name="LB" DockPanel.Dock="Left" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Processes }" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="450">
+            <TextBlock Width="Auto" Grid.Column="1" Grid.Row="1">Plane: <Run Text="{Binding CostPlane}"></Run>UAH / Already get: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
+
+        </Grid >
+
+        <Grid Grid.Row="1" Height="Auto" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="2*"></ColumnDefinition>
+                <ColumnDefinition  Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="LB" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" MaxHeight="450" Height="Auto" MinHeight="300">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card
@@ -55,26 +72,38 @@
                                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                           Padding="8"
                                           UniformCornerRadius="6" >
-                            <DockPanel>
-                                <CheckBox DockPanel.Dock="Left"  Width="250"  FontSize="18" FontFamily="Consolas" Foreground="{DynamicResource PrimaryHueDarkBrush}"></CheckBox>
-                                 <Label Margin="0" ToolTip="Spent" Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18">300</Label>
-                                <ProgressBar Background="{StaticResource SecondaryHueMidBrush }" Foreground="{DynamicResource PrimaryHueDarkBrush}" Value="30" Height="10" Width="200" Margin="5,0,5,0"></ProgressBar>
-                                <Label Margin="0" ToolTip="Plane" Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18">1000</Label>
-                                <TextBox DockPanel.Dock="Right" Foreground="{DynamicResource MaterialDesignCardBackground}" FontSize="18" FontFamily="Consolas" Width="100" HorizontalContentAlignment="Right">0</TextBox>
-                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition  Width="*"></ColumnDefinition>
+                                    <ColumnDefinition  Width="4*"></ColumnDefinition>
+                                    <ColumnDefinition  Width="*"></ColumnDefinition>
+                                    <ColumnDefinition  Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name}" MinWidth="200" ToolTip="Category" Foreground="{DynamicResource MaterialDesignCardBackground}" FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" Margin="20,0,0,0"></TextBlock>
+                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" Text="{Binding CostSpent}" Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" HorizontalAlignment="Stretch" TextAlignment="Center">300</TextBlock>
+                                <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" Foreground="{DynamicResource PrimaryHueDarkBrush}" Value="30" Height="10" Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"></ProgressBar>
+                                <TextBlock Grid.Column="3" Margin="0" ToolTip="Plane" Text="{Binding CostPlane}" Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" HorizontalAlignment="Stretch" TextAlignment="Center">1000</TextBlock>
+                                <TextBox Grid.Column="4" Foreground="{DynamicResource MaterialDesignCardBackground}" FontSize="18" FontFamily="Consolas" Width="100" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch">0</TextBox>
+                            </Grid>
 
                         </materialDesign:Card>
 
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Border Background="AliceBlue" DockPanel.Dock="Right" Width="300" Margin="20"></Border>
-        </DockPanel>
-        <UniformGrid Columns="2" DockPanel.Dock="Bottom" >
-            <Button Margin="180,0,0,0" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
+            <Border Grid.Column="1" Background="AliceBlue"  Width="Auto" Height="Auto" Margin="20"></Border>
+        </Grid>
+        <Grid Grid.Row="2" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="*"></ColumnDefinition>
+                <ColumnDefinition  Width="*"></ColumnDefinition>
+                <ColumnDefinition  Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" > Add </Button>
-            <Button Margin="0,0,70,0"  HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}"
+            <Button Grid.Column="4" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10"> More Diagrams </Button>
-        </UniformGrid>
-    </DockPanel>
+        </Grid>
+    </Grid>
 </Window>
