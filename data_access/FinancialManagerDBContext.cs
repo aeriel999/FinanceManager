@@ -26,12 +26,12 @@ namespace data_access
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
+            optionsBuilder.UseSqlServer(@"Data Source=.;
                                            Initial Catalog = FinancialManager_Db;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
                                            ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-         
+
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
