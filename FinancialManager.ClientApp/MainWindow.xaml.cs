@@ -22,6 +22,14 @@ namespace FinancialManager.ClientApp;
 public partial class MainWindow : Window
 {
 
+    private ViewModel _viewModel = new ViewModel();
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        DataContext = _viewModel;
+    }
+
     private void OpenResponseWindowBtnClick(object sender, RoutedEventArgs e)
     {
         var responseWindow = new ResponseWindow();
@@ -36,6 +44,9 @@ public partial class MainWindow : Window
         incomeWindow.Show();
     }
 
+    private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
+    {
+        _viewModel.SaveChanges();
     }
 }
 
