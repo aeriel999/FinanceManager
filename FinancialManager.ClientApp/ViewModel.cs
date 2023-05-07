@@ -16,15 +16,21 @@ namespace FinancialManager.ClientApp
     {
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
+        private ObservableCollection<Category_for_Income> _dailyCategory_for_Income;
         private decimal _amount;
 
         public ViewModel()
         {
             _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
                                                                                                 .Include(c => c.Items));
+
+            _dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
+                                                                                            .Include(i => i.Incomes));
+                                                                                                
         }
 
         public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
+        public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
         public string Date => DateTime.Now.ToString();
 

@@ -17,12 +17,10 @@ namespace FinancialManager.ClientApp;
 
 public partial class IncomeWindow : Window
 {
-    public ObservableCollection<string> Products { get; set; }
     private ViewModel _model = new ViewModel();
     public IncomeWindow()
     {
         InitializeComponent();
-        Products = new ObservableCollection<string> { "Product 1", "Product 2", "Product 3" };
-        DataContext = this;
+        DataContext = _model;
     }
 }
