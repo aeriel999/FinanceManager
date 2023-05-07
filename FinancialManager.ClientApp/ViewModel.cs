@@ -15,9 +15,7 @@ namespace FinancialManager.ClientApp
     public class ViewModel : IDisposable
     {
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
-
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
-
         private decimal _amount;
 
         public ViewModel()
@@ -33,6 +31,8 @@ namespace FinancialManager.ClientApp
         public int NumberOfChanges { get; set; }
 
         public decimal Amount { get => GetAmount(); private set => _amount = value; }
+        public decimal CurrentAmount { get; set; }
+        public decimal Balance { get; set; }
 
         private decimal GetAmount()
         {
@@ -40,7 +40,7 @@ namespace FinancialManager.ClientApp
 
             foreach (var c in _dailyCategoryExpenses)
             {
-                amount += c.GetPlaneExpense;
+                amount += c.PlaneExpense;
             }
 
             return amount;
@@ -132,6 +132,19 @@ namespace FinancialManager.ClientApp
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public void UpdateCurrentAmount()
+        {
+            decimal amount = 0;
+
+            foreach (var item in _dailyCategoryExpenses)
+            {
+                item.ActuallyExpense += item.DailyCostSpent;
+                amount += item.ActuallyExpense;
+            }
+
+            CurrentAmount = amount;
         }
 
         public void Dispose()
