@@ -26,7 +26,8 @@ namespace FinancialManager.ClientApp
 
             _dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
                                                                                             .Include(i => i.Incomes));
-                                                                                                
+
+            CountCurrentAmount();
         }
 
         public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
@@ -140,17 +141,28 @@ namespace FinancialManager.ClientApp
             }
         }
 
-        public void UpdateCurrentAmount()
+        private void CountCurrentAmount()
         {
             decimal amount = 0;
 
             foreach (var item in _dailyCategoryExpenses)
             {
-                item.ActuallyExpense += item.DailyCostSpent;
                 amount += item.ActuallyExpense;
             }
 
             CurrentAmount = amount;
+        }
+
+        public void UpdateCurrentAmount()
+        {
+            foreach (var item in _dailyCategoryExpenses)
+            {
+                item.ActuallyExpense += item.DailyCostSpent;
+            }
+
+            CountCurrentAmount();
+
+            _dBContext.SaveChanges();
         }
 
         public void Dispose()

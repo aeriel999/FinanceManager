@@ -89,13 +89,13 @@
                                            Foreground="{DynamicResource MaterialDesignCardBackground}" 
                                            FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" 
                                            Margin="20,0,0,0"></TextBlock>
-                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" Text="{Binding DailyCostSpent}" 
+                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" Text="{Binding ActuallyExpense}" 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center"/> 
                                 <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" 
                                              Foreground="{DynamicResource PrimaryHueDarkBrush}" Height="10" 
                                              Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"
-                                             Maximum="{Binding PlaneExpense}" Value="{Binding DailyCostSpent}">
+                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}">
                                 </ProgressBar>
                                 <TextBlock Grid.Column="3" Margin="0" ToolTip="Plane" Text="{Binding PlaneExpense}" 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
