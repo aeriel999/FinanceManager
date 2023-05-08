@@ -2,6 +2,8 @@
 using data_access.Entities;
 using Microsoft.EntityFrameworkCore;
 using PropertyChanged;
+using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +32,7 @@ namespace FinancialManager.ClientApp
         }
 
         public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
+
         public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
         public string Date => DateTime.Now.ToString();
@@ -37,7 +40,9 @@ namespace FinancialManager.ClientApp
         public int NumberOfChanges { get; set; }
 
         public decimal Amount { get => GetAmount(); private set => _amount = value; }
+
         public decimal CurrentAmount { get; set; }
+
         public decimal Balance { get; set; }
 
         private decimal GetAmount()
@@ -198,9 +203,38 @@ namespace FinancialManager.ClientApp
             _dBContext.SaveChanges();
         }
 
+        public void GetPlaneAmounValeus(WpfPlot plot)
+        {
+            int size = _dailyCategoryExpenses.Count;
+
+            double[] values = new double[size];
+            string[] sliceLabels = new string[size];
+            string[] legendLabels = new string[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                values[i] = double.Parse(_dailyCategoryExpenses[i].PlaneExpense.ToString());
+                sliceLabels[i] = _dailyCategoryExpenses[i].PlaneExpense.ToString();
+                legendLabels[i] = _dailyCategoryExpenses[i].Name;
+            }
+
+            var pie = plot.Plot.AddPie(values);
+            pie.SliceLabels = sliceLabels;
+            pie.ShowLabels = false;
+
+            pie.LegendLabels = legendLabels;
+            plot.Plot.Legend();
+            plot.Refresh();
+        }
+
         public void Dispose()
         {
             _dBContext.Dispose();
         }
+    }
+
+    public class MonthStatistic
+    {
+
     }
 }

@@ -69,5 +69,22 @@ public partial class MainWindow : Window
         _viewModel.UpdateCurrentAmount();
  
     }
+
+    private void formsPlot1_Loaded(object sender, RoutedEventArgs e)
+    {
+        _viewModel.GetPlaneAmounValeus(formsPlot1);
+
+            //double[] values = { 778, 43, 283, 76, 184 };
+            //string[] SliceLabels = { "Cat", "Dog", "Snake", "Frog", "Fox" };
+            //string[] LegendLabels = { "Meow", "Woof", "Ssst", "Ribbit", "RingDing" };
+
+            //var pie = formsPlot1.Plot.AddPie(values);
+            //pie.SliceLabels = SliceLabels;
+            //pie.ShowLabels = true;
+
+            //pie.LegendLabels = LegendLabels;
+            //formsPlot1.Plot.Legend();
+            //formsPlot1.Refresh();
+    }
 }
 
