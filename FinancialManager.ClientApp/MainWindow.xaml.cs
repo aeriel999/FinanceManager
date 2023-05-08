@@ -47,7 +47,7 @@ public partial class MainWindow : Window
             CircleWindow.Show();
         }
         else CircleWindow.Activate();
-        }
+        
      }
 
     private void OpenResponseWindowBtnClick(object sender, RoutedEventArgs e)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinancialManager.ClientApp"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance local:ViewModel}"
+        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -110,7 +110,8 @@
             </ListBox>
 
             
-            <WpfPlot x:Name="formsPlot1" DockPanel.Dock="Right" Margin="20" Loaded="formsPlot1_Loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Height="314" Width="580"/>
+            <!--<WpfPlot x:Name="formsPlot1" DockPanel.Dock="Right" Margin="20" 
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Height="314" Width="580"/>-->
         
         </Grid>
         <Grid Grid.Row="2" VerticalAlignment="Center">
@@ -123,7 +124,7 @@
                      VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" >Add</Button>
             <Button Grid.Column="4" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" 
-                    Style="{StaticResource MaterialDesignRaisedButton}" Click="SaveAmountBtnClick"
+                    Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click"
                     Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10">More Diagrams</Button>
         </Grid>
     </Grid>
