@@ -93,7 +93,10 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Border Grid.Column="1" Background="AliceBlue"  Width="Auto" Height="Auto" Margin="20"></Border>
+
+            
+            <WpfPlot x:Name="formsPlot1" DockPanel.Dock="Right" Margin="20" Loaded="formsPlot1_Loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Height="314" Width="580"/>
+        
         </Grid>
         <Grid Grid.Row="2" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -109,3 +112,4 @@
         </Grid>
     </Grid>
 </Window>
+

@@ -1,4 +1,9 @@
 ﻿using data_access;
+
+using data_access.Entities;
+using Microsoft.EntityFrameworkCore;
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +26,23 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+
+    FinancialManagerDBContext dbcontext = new FinancialManagerDBContext();
+    public static DiagramWindow? CircleWindow;
+    
+
+   
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        if (CircleWindow == null)
+        {
+            CircleWindow = new DiagramWindow();
+            CircleWindow.Show();
+        }
+        else CircleWindow.Activate();
+        }
+
 
     private ViewModel _viewModel = new ViewModel();
     public MainWindow()
@@ -47,6 +69,7 @@ public partial class MainWindow : Window
     private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
     {
         _viewModel.SaveChanges();
+
     }
 }
 
