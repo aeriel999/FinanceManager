@@ -36,13 +36,6 @@ namespace FinancialManager.ClientApp
             _isBusy = true;
         }
 
-        //private  void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //     _model.AddItem(new ExpenseItem() { Name = "ffffffffffffff", Amount = 300 });
-
-        
-        //}
-
         private void EditExpenseWindowBtnClick(object sender, RoutedEventArgs e)
         {
             _model.SetEditingProperty(true);
@@ -81,12 +74,18 @@ namespace FinancialManager.ClientApp
 
         private void DeleteCategoriesBtnClick(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you shure that you want delete category with all items?", "Confirmation",MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Are you shure that you want delete category with all items?",
+                "Confirmation",MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
                 _model.DeleteCategory();
             }
+        }
+
+        private void DeleteItemBtnClick(object sender, RoutedEventArgs e)
+        {
+            _model.DeleteItem();
         }
     }
 }

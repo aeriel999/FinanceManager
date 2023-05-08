@@ -8,7 +8,7 @@ namespace data_access.Entities
     [AddINotifyPropertyChangedInterface]
     public class Category_for_expense 
     {
-        private decimal _getPlaneExpense;
+        private decimal _planeExpense;
 
         public Category_for_expense(string name)
         {
@@ -27,7 +27,7 @@ namespace data_access.Entities
 
         public decimal ActuallyExpense { get; set; }
 
-        public decimal PlaneExpense { get; set; }
+        //public decimal PlaneExpense { get; set; }
 
         [NotMapped]
         public bool IsChecked { get; set; }
@@ -36,7 +36,9 @@ namespace data_access.Entities
         public bool CanEdit { get; set; }
 
         [NotMapped]
-        public decimal GetPlaneExpense { get => GetPlaneAmount(); set => _getPlaneExpense = value; }
+        public decimal DailyCostSpent { get; set; }
+
+        public decimal PlaneExpense { get => GetPlaneAmount(); set => _planeExpense = value; }
 
         public void AddItenInCat(ExpenseItem i)
         {
@@ -57,7 +59,7 @@ namespace data_access.Entities
 
         public void UpdateAmount()
         {
-            GetPlaneExpense = GetPlaneAmount();
+            PlaneExpense = GetPlaneAmount();
         }
     }
 }

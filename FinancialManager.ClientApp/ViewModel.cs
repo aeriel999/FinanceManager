@@ -1,6 +1,5 @@
 ﻿using data_access;
 using data_access.Entities;
-using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using PropertyChanged;
 using System;
@@ -15,23 +14,31 @@ namespace FinancialManager.ClientApp
     public class ViewModel : IDisposable
     {
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
-
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
+        private ObservableCollection<Category_for_Income> _dailyCategory_for_Income;
         private decimal _amount;
 
         public ViewModel()
         {
             _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
                                                                                                 .Include(c => c.Items));
+
+            _dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
+                                                                                            .Include(i => i.Incomes));
+
+            CountCurrentAmount();
         }
 
         public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
+        public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
         public string Date => DateTime.Now.ToString();
 
         public int NumberOfChanges { get; set; }
 
         public decimal Amount { get => GetAmount(); private set => _amount = value; }
+        public decimal CurrentAmount { get; set; }
+        public decimal Balance { get; set; }
 
         private decimal GetAmount()
         {
@@ -39,7 +46,7 @@ namespace FinancialManager.ClientApp
 
             foreach (var c in _dailyCategoryExpenses)
             {
-                amount += c.GetPlaneExpense;
+                amount += c.PlaneExpense;
             }
 
             return amount;
@@ -91,6 +98,40 @@ namespace FinancialManager.ClientApp
             }
         }
 
+        public void DeleteItem()
+        {
+            List<ExpenseItem> items = new List<ExpenseItem>();
+            try
+            {
+                foreach (var c in _dailyCategoryExpenses)
+                {
+                    if (c.IsChecked)
+                    {
+                        foreach (var i in c.Items)
+                        {
+                            if (i.IsChecked)
+                            {
+                                items.Add(i);
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    _dailyCategoryExpenses.Single(c => c.IsChecked == true).Items.Remove(items[i]);
+                    _dBContext.ExpenseItems.Remove(items[i]);
+                    _dBContext.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
         public int GetCheckedId()
         {
             int id = -1;
@@ -121,7 +162,7 @@ namespace FinancialManager.ClientApp
         {
             try
             {
-                var category = _dailyCategoryExpenses.Single(c => c.Id == GetCheckedId());
+                var category = _dailyCategoryExpenses.Single(c => c.IsChecked == true);
 
                 _dailyCategoryExpenses.Remove(category);
                 _dBContext.Categories_For_Expense.Remove(category);
@@ -131,6 +172,30 @@ namespace FinancialManager.ClientApp
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void CountCurrentAmount()
+        {
+            decimal amount = 0;
+
+            foreach (var item in _dailyCategoryExpenses)
+            {
+                amount += item.ActuallyExpense;
+            }
+
+            CurrentAmount = amount;
+        }
+
+        public void UpdateCurrentAmount()
+        {
+            foreach (var item in _dailyCategoryExpenses)
+            {
+                item.ActuallyExpense += item.DailyCostSpent;
+            }
+
+            CountCurrentAmount();
+
+            _dBContext.SaveChanges();
         }
 
         public void Dispose()

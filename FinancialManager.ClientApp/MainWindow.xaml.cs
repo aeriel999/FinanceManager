@@ -29,11 +29,17 @@ public partial class MainWindow : Window
 
     FinancialManagerDBContext dbcontext = new FinancialManagerDBContext();
     public static DiagramWindow? CircleWindow;
+  
+    private ViewModel _viewModel = new ViewModel();
+
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        DataContext = _viewModel;
+    }
     
-
-   
-
-    private void Button_Click(object sender, RoutedEventArgs e)
+       private void Button_Click(object sender, RoutedEventArgs e)
     {
         if (CircleWindow == null)
         {
@@ -42,15 +48,7 @@ public partial class MainWindow : Window
         }
         else CircleWindow.Activate();
         }
-
-
-    private ViewModel _viewModel = new ViewModel();
-    public MainWindow()
-    {
-        InitializeComponent();
-
-        DataContext = _viewModel;
-    }
+     }
 
     private void OpenResponseWindowBtnClick(object sender, RoutedEventArgs e)
     {
@@ -68,8 +66,8 @@ public partial class MainWindow : Window
 
     private void SaveAmountBtnClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.SaveChanges();
-
+        _viewModel.UpdateCurrentAmount();
+ 
     }
 }
 
