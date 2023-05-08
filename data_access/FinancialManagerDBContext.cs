@@ -17,8 +17,6 @@ namespace data_access
     public class FinancialManagerDBContext:DbContext
     {
 
-      
-
         public DbSet<Category_for_expense> Categories_For_Expense { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
@@ -28,28 +26,19 @@ namespace data_access
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
-            //                               Initial Catalog = FinancialManager_Db;
-            //                               Integrated Security=True; Connect Timeout=30;
-            //                               Encrypt=False;TrustServerCertificate=False;
-            //                               ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-BE2OL10\SQLEXPRESS;Integrated Security=True;Connect Timeout=2; Initial Catalog = FinancialManager_Db;
-            Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Data Source=.;
+                                           Initial Catalog = FinancialManager_Db;
+                                           Integrated Security=True; Connect Timeout=30;
+                                           Encrypt=False;TrustServerCertificate=False;
+                                           ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
 
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-
-            modelBuilder.SeedCategory();
-            modelBuilder.SeedExpenseItem();
-            modelBuilder.SeedExpense();
-            modelBuilder.SeedCategoryIncome();
-            modelBuilder.SeedIncome();
-
 
             modelBuilder.Entity<Category_for_expense>().HasKey(c => c.Id);
             modelBuilder.Entity<Category_for_expense>().Property(c => c.Name).HasMaxLength(100).IsRequired();
@@ -59,7 +48,7 @@ namespace data_access
             modelBuilder.Entity<Expense>().ToTable(e => e.HasCheckConstraint("Amount", "Amount >= 0"));
             modelBuilder.Entity<ExpenseItem>().HasKey(ei => ei.Id);
             modelBuilder.Entity<ExpenseItem>().Property(ei => ei.Name).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<ExpenseItem>().Property(ei=>ei.Amount).IsRequired();
+            //modelBuilder.Entity<ExpenseItem>().Property(ei=>ei.Amount).IsRequired();
             modelBuilder.Entity<ExpenseItem>().ToTable(ei => ei.HasCheckConstraint("Amount", "Amount>= 0"));
             modelBuilder.Entity<Income>().HasKey(i=>i.Id);
             modelBuilder.Entity<Income>().Property(i=>i.Month).HasMaxLength(50).IsRequired();
@@ -77,6 +66,13 @@ namespace data_access
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.ActuallyExpense).HasColumnType("money");
             modelBuilder.Entity<ExpenseItem>().Property(e => e.Amount).HasColumnType("money");
             modelBuilder.Entity<Expense>().Property(e => e.Amount).HasColumnType("money");
+
+            modelBuilder.SeedCategory();
+            modelBuilder.SeedExpenseItem();
+            modelBuilder.SeedExpense();
+            modelBuilder.SeedCategoryIncome();
+            modelBuilder.SeedIncome();
+
 
         }
 

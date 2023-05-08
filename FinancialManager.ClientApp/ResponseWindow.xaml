@@ -13,64 +13,117 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ResponseWindow" Height="450" Width="800">
+        Title="ResponseWindow" Height="700" Width="1000">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
-  Mode="Custom"
-  Background="Black"
-  Foreground="White"
-  Padding="16 0"
-  ClipToBounds="False">
-            <StackPanel
-    Orientation="Horizontal">
-                <DatePicker SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Margin="2,5"></DatePicker>
-                <TextBlock VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
-                    <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
-                <materialDesign:Badged  Margin="2,5"
-      Badge="1 changed"
-      VerticalAlignment="Center">
-                    <Button Margin="5" Click="SaveResponseAmountClick">
+              Mode="Custom"
+              Background="Black"
+              Foreground="White"
+              Padding="16 0"
+              ClipToBounds="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <DatePicker Grid.Column="0" SelectedDate="{Binding Date, Mode=OneWay}" 
+                            SelectedDateFormat="Long" Margin="2,5"></DatePicker>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
+                    <Run Text="{Binding Amount, StringFormat='0,0.00', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/> UAH</TextBlock>
+                <Button Grid.Column="2" Margin="5" Click="EditExpenseWindowBtnClick">Edit</Button>
+                <materialDesign:Badged  Margin="2,5" Grid.Column="3" HorizontalAlignment="Center"
+                          Badge="{Binding NumberOfChanges}"
+                          VerticalAlignment="Center">
+                    <Button Margin="5" Click="SaveResponseChangesClick">
                         Save
                     </Button>
                 </materialDesign:Badged>
-            </StackPanel>
+               
+                <Button Margin="5" Click="CloseBtnClick" Grid.Column="4">Exit</Button>
+            </Grid>
         </materialDesign:ColorZone>
-        <ListBox DockPanel.Dock="Top" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >
+        <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="5">
+            <Grid Margin="5" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock  Grid.Column="0" VerticalAlignment="Bottom" FontSize="16">Enter new category name:</TextBlock>
+                <TextBox Name="NewCategoryNamTB" Grid.Column="1" Margin="5"/>
+                <Button Margin="5" Click="AddCategoryBtnClick" Grid.Column="4">Add Category</Button>
+            </Grid>
+        </Border>
+        <ListBox DockPanel.Dock="Top" Name="CategoriesLB"
+                 ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <ListBoxItem >
                         <StackPanel>
-                            <Expander
-      HorizontalAlignment="Stretch"
-      Header="{Binding Name}">
-                                <ListBox Name="informationLB" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <ListBoxItem >
-                                                <Grid HorizontalAlignment="Stretch">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="10*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock HorizontalAlignment="Left" Margin="5" Grid.Column="0" Text="{Binding Name}"
-                                       TextTrimming="CharacterEllipsis"/>
-                                                    <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5"
-                                                              Text="{Binding CostPlane, Mode=TwoWay}"
-                                                             />
-                                                    <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
-                                                </Grid>
-                                            </ListBoxItem>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                            <Expander HorizontalAlignment="Stretch" IsExpanded="{Binding IsChecked, Mode=TwoWay}">
+                                <Expander.Header>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="7*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5"></CheckBox>
+                                        <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Name="CategoryNameTB"
+                                                  IsEnabled="{Binding CanEdit}" Margin="5"
+                                                 TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
+                                        <TextBlock Grid.Column="2" Margin="5" VerticalAlignment="Bottom"> Amount: 
+                                            <Run Text="{Binding GetPlaneExpense, StringFormat='0,0.00', Mode=OneWay,
+                                                UpdateSourceTrigger=PropertyChanged}" /> UAH</TextBlock>
+                                        <Button Grid.Column="3" Click="DeleteCategoriesBtnClick" 
+                                                IsEnabled="{Binding IsChecked, Mode=TwoWay}">Delete</Button>
+                                    </Grid>
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <DockPanel MaxHeight="350" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <Grid DockPanel.Dock="Top">
+                                            <Button Click="AddItemInCategoriesBtnClick" HorizontalAlignment="Center" Margin="5"
+                                                    Width="150">Add item of response</Button>
+                                        </Grid>
+                                        <ListBox Name="ItemsLB" HorizontalContentAlignment="Stretch" 
+                                         Background="#FFC1D291" Foreground="#FF2C2626"
+                                         ItemsSource="{Binding Items, Mode=TwoWay}"  >
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate >
+                                                    <ListBoxItem >
+                                                        <Grid HorizontalAlignment="Stretch">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="10*"/>
+                                                                <ColumnDefinition Width="2*"/>
+                                                                <ColumnDefinition Width="2*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBox HorizontalAlignment="Left" Margin="5" Grid.Column="0" 
+                                                                   IsEnabled="{Binding CanEdit}" Text="{Binding Name, Mode=TwoWay}"
+                                                                     TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
+                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5" 
+                                                                      IsEnabled="{Binding CanEdit}"
+                                                              Text="{Binding Amount, StringFormat='0,0.00', Mode=TwoWay}" 
+                                                              TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
+                                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
+                                                        </Grid>
+                                                    </ListBoxItem>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+
+                                    </DockPanel>
+                                </Expander.Content>
                             </Expander>
                             <Border
-      Background="{DynamicResource MaterialDesignDivider}"
-      Height="1"
-      HorizontalAlignment="Stretch"
-      SnapsToDevicePixels="True" />
-                            </StackPanel>
+                                  Background="{DynamicResource MaterialDesignDivider}"
+                                  Height="1"
+                                  HorizontalAlignment="Stretch"
+                                  SnapsToDevicePixels="True" /> 
+                        </StackPanel>
                     </ListBoxItem >
                 </DataTemplate>
             </ListBox.ItemTemplate>
