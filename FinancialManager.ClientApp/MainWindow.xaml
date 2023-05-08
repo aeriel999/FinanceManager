@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinancialManager.ClientApp"
         mc:Ignorable="d"
-        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -68,7 +67,7 @@
                 <ColumnDefinition  Width="2*"></ColumnDefinition>
                 <ColumnDefinition  Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="LB" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" 
+            <ListBox x:Name="LB" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" Grid.Column="0"
                      MaxHeight="450" Height="Auto" MinHeight="300">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -109,9 +108,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            
-            <!--<WpfPlot x:Name="formsPlot1" DockPanel.Dock="Right" Margin="20" 
-                      HorizontalAlignment="Center" VerticalAlignment="Center" Height="314" Width="580"/>-->
+
+            <WpfPlot x:Name="formsPlot1" Margin="5" Grid.Column="1" Loaded="formsPlot1_Loaded"
+                      Height="200" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         
         </Grid>
         <Grid Grid.Row="2" VerticalAlignment="Center">
