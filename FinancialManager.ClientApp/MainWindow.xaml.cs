@@ -1,4 +1,7 @@
-﻿using System;
+﻿using data_access;
+using data_access.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +23,8 @@ namespace FinancialManager.ClientApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+    FinancialManagerDBContext dbcontext = new FinancialManagerDBContext();
+    public static DiagramWindow? CircleWindow;
     public MainWindow()
     {
         InitializeComponent();
@@ -27,13 +32,22 @@ public partial class MainWindow : Window
         {
             LB.Items.Add("");
         }
-
         //var win = new ResponseWindow();
-
         //win.Show();
-
         //this.Close();
     }
 
+    private void formsPlot1_Loaded(object sender, RoutedEventArgs e)
+    {    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        if (CircleWindow == null)
+        {
+            CircleWindow = new DiagramWindow();
+            CircleWindow.Show();
+        }
+        else CircleWindow.Activate();
+    }
 }
 

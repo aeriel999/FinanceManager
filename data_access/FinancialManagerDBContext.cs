@@ -28,12 +28,16 @@ namespace data_access
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
-                                           Initial Catalog = FinancialManager_Db;
-                                           Integrated Security=True; Connect Timeout=30;
-                                           Encrypt=False;TrustServerCertificate=False;
-                                           ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-         
+            //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
+            //                               Initial Catalog = FinancialManager_Db;
+            //                               Integrated Security=True; Connect Timeout=30;
+            //                               Encrypt=False;TrustServerCertificate=False;
+            //                               ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-BE2OL10\SQLEXPRESS;Integrated Security=True;Connect Timeout=2; Initial Catalog = FinancialManager_Db;
+            Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
