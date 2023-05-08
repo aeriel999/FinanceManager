@@ -86,8 +86,14 @@
                                 <Expander.Content>
                                     <DockPanel MaxHeight="350" ScrollViewer.VerticalScrollBarVisibility="Visible">
                                         <Grid DockPanel.Dock="Top">
-                                            <Button Click="AddItemInCategoriesBtnClick" HorizontalAlignment="Center" Margin="5"
-                                                    Width="150">Add item of response</Button>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Click="AddItemInCategoriesBtnClick" HorizontalAlignment="Center" Margin="5"
+                                                    Width="200">Add item of response</Button>
+                                            <Button Grid.Column="1" Click="DeleteItemBtnClick" HorizontalAlignment="Center" Margin="5"
+                                                    Width="200">Delete item of response</Button>
                                         </Grid>
                                         <ListBox Name="ItemsLB" HorizontalContentAlignment="Stretch" 
                                          Background="#FFC1D291" Foreground="#FF2C2626"
@@ -97,18 +103,20 @@
                                                     <ListBoxItem >
                                                         <Grid HorizontalAlignment="Stretch">
                                                             <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="10*"/>
                                                                 <ColumnDefinition Width="2*"/>
                                                                 <ColumnDefinition Width="2*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBox HorizontalAlignment="Left" Margin="5" Grid.Column="0" 
+                                                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"></CheckBox>
+                                                            <TextBox HorizontalAlignment="Left" Margin="5" Grid.Column="1" 
                                                                    IsEnabled="{Binding CanEdit}" Text="{Binding Name, Mode=TwoWay}"
                                                                      TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
-                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="1" Margin="5" 
+                                                            <TextBox  HorizontalAlignment="Left" Grid.Column="2" Margin="5" 
                                                                       IsEnabled="{Binding CanEdit}"
                                                               Text="{Binding Amount, StringFormat='0,0.00', Mode=TwoWay}" 
                                                               TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>
-                                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="2" Margin="5" Text="UAH"/>
+                                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="3" Margin="5" Text="UAH"/>
                                                         </Grid>
                                                     </ListBoxItem>
                                                 </DataTemplate>

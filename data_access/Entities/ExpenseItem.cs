@@ -11,14 +11,6 @@ namespace data_access.Entities
     [AddINotifyPropertyChangedInterface]
     public class ExpenseItem
     {
-        //public ExpenseItem() { }
-
-        //public ExpenseItem(string name, decimal amount)
-        //{
-        //    Name = name;
-        //    Amount = amount;
-        //}
-    
         public int Id { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
@@ -27,5 +19,8 @@ namespace data_access.Entities
 
         [NotMapped]
         public bool CanEdit { get; set; }
+
+        [NotMapped]
+        public bool IsChecked { get; set; }
     }
 }

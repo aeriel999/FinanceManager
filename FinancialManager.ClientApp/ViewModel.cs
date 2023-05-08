@@ -1,6 +1,5 @@
 ﻿using data_access;
 using data_access.Entities;
-using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using PropertyChanged;
 using System;
@@ -99,6 +98,40 @@ namespace FinancialManager.ClientApp
             }
         }
 
+        public void DeleteItem()
+        {
+            List<ExpenseItem> items = new List<ExpenseItem>();
+            try
+            {
+                foreach (var c in _dailyCategoryExpenses)
+                {
+                    if (c.IsChecked)
+                    {
+                        foreach (var i in c.Items)
+                        {
+                            if (i.IsChecked)
+                            {
+                                items.Add(i);
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    _dailyCategoryExpenses.Single(c => c.IsChecked == true).Items.Remove(items[i]);
+                    _dBContext.ExpenseItems.Remove(items[i]);
+                    _dBContext.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
         public int GetCheckedId()
         {
             int id = -1;
@@ -129,7 +162,7 @@ namespace FinancialManager.ClientApp
         {
             try
             {
-                var category = _dailyCategoryExpenses.Single(c => c.Id == GetCheckedId());
+                var category = _dailyCategoryExpenses.Single(c => c.IsChecked == true);
 
                 _dailyCategoryExpenses.Remove(category);
                 _dBContext.Categories_For_Expense.Remove(category);
