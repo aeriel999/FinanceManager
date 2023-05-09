@@ -1,4 +1,5 @@
 ﻿using data_access.Entities;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -52,6 +53,10 @@ namespace FinancialManager.ClientApp
         private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+
+            var window = new MainWindow();
+
+            window.Show();
         }
 
         private void AddItemInCategoriesBtnClick(object sender, RoutedEventArgs e)
@@ -87,5 +92,6 @@ namespace FinancialManager.ClientApp
         {
             _model.DeleteItem();
         }
+
     }
 }

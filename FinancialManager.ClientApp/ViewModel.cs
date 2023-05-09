@@ -35,7 +35,7 @@ namespace FinancialManager.ClientApp
 
         public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
-        public string Date => DateTime.Now.ToString();
+        public DateTime Date => DateTime.Now;
 
         public int NumberOfChanges { get; set; }
 
@@ -65,6 +65,18 @@ namespace FinancialManager.ClientApp
             {
                 c.UpdateAmount();
             }
+
+            UpdateStatisticPlainResponse();
+        }
+
+        private void UpdateStatisticPlainResponse()
+        {
+            if (_dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day) != null)
+                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = Amount;
+            else
+                _dBContext.Expenses.Add(new Expense(Amount,0) { Day = Date });
+
+            _dBContext.SaveChanges();
         }
 
         public void SaveChanges()
@@ -201,6 +213,22 @@ namespace FinancialManager.ClientApp
             CountCurrentAmount();
 
             _dBContext.SaveChanges();
+
+            UpdateStatisticCurrentResponse();
+        }
+
+        private void UpdateStatisticCurrentResponse()
+        {
+            try
+            {
+                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).CurrentAmount = CurrentAmount;
+
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void GetPlaneAmounValeus(WpfPlot plot)
