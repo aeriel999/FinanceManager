@@ -54,6 +54,8 @@ namespace FinancialManager.ClientApp
                 amount += c.PlaneExpense;
             }
 
+            UpdateStatisticPlainResponse(amount);
+
             return amount;
         }
 
@@ -65,16 +67,14 @@ namespace FinancialManager.ClientApp
             {
                 c.UpdateAmount();
             }
-
-            UpdateStatisticPlainResponse();
         }
 
-        private void UpdateStatisticPlainResponse()
+        private void UpdateStatisticPlainResponse(decimal amount)
         {
             if (_dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day) != null)
-                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = Amount;
+                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = amount;
             else
-                _dBContext.Expenses.Add(new Expense(Amount,0) { Day = Date });
+                _dBContext.Expenses.Add(new Expense(amount, 0) { Day = Date });
 
             _dBContext.SaveChanges();
         }
@@ -261,8 +261,5 @@ namespace FinancialManager.ClientApp
         }
     }
 
-    public class MonthStatistic
-    {
-
-    }
+   
 }

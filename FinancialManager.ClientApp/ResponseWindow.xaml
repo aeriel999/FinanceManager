@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <DatePicker Grid.Column="0" SelectedDate="{Binding Date, Mode=OneWay}" 
                             SelectedDateFormat="Long" Margin="2,5"></DatePicker>
@@ -42,7 +42,7 @@
                     </Button>
                 </materialDesign:Badged>
                
-                <Button Margin="5" Click="CloseBtnClick" Grid.Column="4">Exit</Button>
+                <Button Margin="5" Click="CloseBtnClick" Grid.Column="4">Retern to Main Window</Button>
             </Grid>
         </materialDesign:ColorZone>
         <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="5">
@@ -64,7 +64,7 @@
                     <ListBoxItem >
                         <StackPanel>
                             <Expander HorizontalAlignment="Stretch" IsExpanded="{Binding IsChecked, Mode=TwoWay}" 
-                                      >
+                                     Name="categoryEx" >
                                 <Expander.Header>
                                     <Grid >
                                         <Grid.ColumnDefinitions>
@@ -73,8 +73,8 @@
                                             <ColumnDefinition Width="3*"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5"
-                                                  ></CheckBox>
+                                        <RadioButton Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5" 
+                                                  GroupName="Categories"></RadioButton>
                                         <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Name="CategoryNameTB"
                                                   IsEnabled="{Binding CanEdit}" Margin="5"
                                                  TextChanged="TextBox_TextChanged" LostFocus="TextBox_LostFocus"/>

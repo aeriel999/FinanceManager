@@ -11,6 +11,8 @@ namespace FinancialManager.ClientApp
 
         private bool _isBusy = true;
 
+        private AddItemWindow? _window;
+
         public ResponseWindow()
         {
             InitializeComponent();
@@ -52,9 +54,9 @@ namespace FinancialManager.ClientApp
 
         private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
-            var window = new MainWindow();
+            //var window = new MainWindow();
 
-            window.Show();
+            //window.Show();
 
             this.Close();
         }
@@ -65,9 +67,9 @@ namespace FinancialManager.ClientApp
 
             if (id >= 0)
             {
-                var itemWindow = new AddItemWindow(_model.GetCheckedId());
+                _window = new AddItemWindow(_model.GetCheckedId());
 
-                itemWindow.Show();
+                _window.Show();
 
                 this.Close();
             }
@@ -92,6 +94,29 @@ namespace FinancialManager.ClientApp
         {
             _model.DeleteItem();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (_window == null)
+            {
+                var w = new MainWindow();
+                w.ShowDialog();
+            }
+        }
+
+            //private void HandleExpanderExpanded(object sender, RoutedEventArgs e)
+            //{
+            //    ExpandExculsively(sender as Expander);
+            //}
+
+            //private void ExpandExculsively(Expander expander)
+            //{
+            //    foreach (var child in findPanel.Children)
+            //    {
+            //        if (child is Expander && child != expander)
+            //            ((Expander)child).IsExpanded = false;
+            //    }
+            //}
 
     }
 }
