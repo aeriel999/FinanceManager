@@ -52,11 +52,11 @@ namespace FinancialManager.ClientApp
 
         private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
-
             var window = new MainWindow();
 
             window.Show();
+
+            this.Close();
         }
 
         private void AddItemInCategoriesBtnClick(object sender, RoutedEventArgs e)
