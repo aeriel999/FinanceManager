@@ -5,9 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinancialManager.ClientApp"
         mc:Ignorable="d"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="DiagramWindow" Height="450" Width="800">
     <Grid>
-        <WpfPlot x:Name="CircleDiagram" Loaded="CircleDiagram_Loaded" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="780" Height="351"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <ComboBox
+  materialDesign:HintAssist.Hint="Search"
+  materialDesign:HintAssist.HintOpacity=".26"
+  IsEditable="True">
+                <ComboBoxItem>
+                    Apple
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Banana
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Pear
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Orange
+                </ComboBoxItem>
+            </ComboBox>
+        </Grid>
+        <WpfPlot x:Name="CircleDiagram" Loaded="CircleDiagram_Loaded" HorizontalAlignment="Center" Grid.Row="1"
+                 Margin="0,10,0,0" VerticalAlignment="Top" Width="780" Height="351"/>
 
     </Grid>
 </Window>

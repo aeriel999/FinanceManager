@@ -1,5 +1,6 @@
 ﻿using data_access.Entities;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -95,7 +96,7 @@ namespace FinancialManager.ClientApp
             _model.DeleteItem();
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             if (_window == null)
             {
@@ -103,20 +104,6 @@ namespace FinancialManager.ClientApp
                 w.ShowDialog();
             }
         }
-
-            //private void HandleExpanderExpanded(object sender, RoutedEventArgs e)
-            //{
-            //    ExpandExculsively(sender as Expander);
-            //}
-
-            //private void ExpandExculsively(Expander expander)
-            //{
-            //    foreach (var child in findPanel.Children)
-            //    {
-            //        if (child is Expander && child != expander)
-            //            ((Expander)child).IsExpanded = false;
-            //    }
-            //}
 
     }
 }

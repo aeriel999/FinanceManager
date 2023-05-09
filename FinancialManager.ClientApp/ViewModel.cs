@@ -71,12 +71,19 @@ namespace FinancialManager.ClientApp
 
         private void UpdateStatisticPlainResponse(decimal amount)
         {
-            if (_dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day) != null)
-                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = amount;
-            else
-                _dBContext.Expenses.Add(new Expense(amount, 0) { Day = Date });
+            try
+            {
+                if (_dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day) != null)
+                    _dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = amount;
+                else
+                    _dBContext.Expenses.Add(new Expense(amount, 0) { Day = Date });
 
-            _dBContext.SaveChanges();
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void SaveChanges()
@@ -231,7 +238,7 @@ namespace FinancialManager.ClientApp
             }
         }
 
-        public void GetPlaneAmounValeus(WpfPlot plot)
+        public void MakePlaneAmounDiagram(WpfPlot plot)
         {
             int size = _dailyCategoryExpenses.Count;
 
@@ -252,6 +259,46 @@ namespace FinancialManager.ClientApp
 
             pie.LegendLabels = legendLabels;
             plot.Plot.Legend();
+            plot.Refresh();
+        }
+
+        private Expense GetValuesForDiagram(int month)
+        {
+            return _dBContext.Expenses.Where(e => e.Day.Month == month).OrderByDescending(e => e.Day.Day).FirstOrDefault();
+        }
+
+        public void MakeResponseDiaram(WpfPlot plot)
+        {
+            int size = 13;
+
+            Expense expense;
+
+            double[] valuesA = new double[size];
+
+            double[] valuesB =  new double[size];
+
+
+            for (int i = 1; i < size; i++)
+            {
+                expense = GetValuesForDiagram(i);
+
+                if (expense != null)
+                {
+                    valuesA[i] = double.Parse(expense.PlaneAmount.ToString());
+                    valuesB[i] = double.Parse(expense.CurrentAmount.ToString());
+                }
+                else 
+                {
+                    valuesA[i] = 0;
+                    valuesB[i] = 0;
+                }
+            }
+
+            plot.Plot.AddBar(valuesA);
+            plot.Plot.AddBar(valuesB);
+
+            plot.Plot.SetAxisLimits(yMin:0, xMin:0, xMax: size);
+
             plot.Refresh();
         }
 

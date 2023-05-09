@@ -74,7 +74,7 @@ public partial class MainWindow : Window
 
     private void formsPlot1_Loaded(object sender, RoutedEventArgs e)
     {
-        _viewModel.GetPlaneAmounValeus(formsPlot1);
+        _viewModel.MakePlaneAmounDiagram(formsPlot1);
     }
 }
 
