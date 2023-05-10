@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_access;
 
@@ -11,9 +12,11 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    partial class FinancialManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230509051223_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,6 +115,9 @@ namespace data_access.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("Category_for_expenseId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("CurrentAmount")
                         .HasColumnType("money");
 
@@ -122,6 +128,8 @@ namespace data_access.Migrations
                         .HasColumnType("money");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Category_for_expenseId");
 
                     b.ToTable("Expenses", t =>
                         {
@@ -242,6 +250,13 @@ namespace data_access.Migrations
                         });
                 });
 
+            modelBuilder.Entity("data_access.Entities.Expense", b =>
+                {
+                    b.HasOne("data_access.Entities.Category_for_expense", null)
+                        .WithMany("Expenses")
+                        .HasForeignKey("Category_for_expenseId");
+                });
+
             modelBuilder.Entity("data_access.Entities.ExpenseItem", b =>
                 {
                     b.HasOne("data_access.Entities.Category_for_expense", "category")
@@ -271,6 +286,8 @@ namespace data_access.Migrations
 
             modelBuilder.Entity("data_access.Entities.Category_for_expense", b =>
                 {
+                    b.Navigation("Expenses");
+
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
