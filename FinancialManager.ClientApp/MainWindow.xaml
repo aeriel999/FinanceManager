@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="700" Width="1000">
+        Title="MainWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="TextAlignment" Value="Justify" ></Setter>
@@ -88,7 +88,8 @@
                                            Foreground="{DynamicResource MaterialDesignCardBackground}" 
                                            FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" 
                                            Margin="20,0,0,0"></TextBlock>
-                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" Text="{Binding ActuallyExpense}" 
+                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" 
+                                           Text="{Binding PlaneExpense, UpdateSourceTrigger=PropertyChanged}" 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center"/> 
                                 <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" 
@@ -96,7 +97,7 @@
                                              Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"
                                              Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}">
                                 </ProgressBar>
-                                <TextBlock Grid.Column="3" Margin="0" ToolTip="Plane" Text="{Binding PlaneExpense}" 
+                                <TextBlock Grid.Column="3" Margin="0" ToolTip="Plane" Text="{Binding ActuallyExpense}" 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center"/>
                                 <TextBox Grid.Column="4" Foreground="{DynamicResource MaterialDesignCardBackground}"

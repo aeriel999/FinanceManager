@@ -307,6 +307,4 @@ namespace FinancialManager.ClientApp
             _dBContext.Dispose();
         }
     }
-
-   
 }

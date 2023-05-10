@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ResponseWindow" Height="700" Width="1000">
+        Title="ResponseWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Top"
               Mode="Custom"
