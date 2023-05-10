@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PropertyChanged;
 using ScottPlot;
 using ScottPlot.Plottable;
+using ScottPlot.Ticks.DateTimeTickUnits;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,8 +18,8 @@ namespace FinancialManager.ClientApp
     {
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
-        private ObservableCollection<Category_for_Income> _dailyCategory_for_Income;
-        //private ObservableCollection<Income> _incomes;
+        private ObservableCollection<Income> _incomes;
+    
         private decimal _amount;
        
 
@@ -27,15 +28,15 @@ namespace FinancialManager.ClientApp
             _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
                                                                                                 .Include(c => c.Items));
 
-            //_dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
-            //                                                                                .Include(i => i.Incomes));
+            
+             _incomes=new ObservableCollection<Income>(_dBContext.Incomes);
 
             CountCurrentAmount();
         }
 
         public IEnumerable<Category_for_expense> DailyCategoryExpenses => _dailyCategoryExpenses;
 
-        public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
+        public IEnumerable<Income> IncomesItem => _incomes;
 
         public DateTime Date => DateTime.Now;
 
@@ -66,13 +67,10 @@ namespace FinancialManager.ClientApp
         {
             decimal amount = 0;
 
-            foreach (var c in _dailyCategory_for_Income)
+            foreach (var c in _incomes)
             {
-                amount += c.AmountIncome;
-               /* foreach (var item in c.Incomes)
-                {
-                    amount += item.Amount;
-                }*/
+                amount += c.Amount;
+              
             }
 
             return amount;
@@ -287,19 +285,12 @@ namespace FinancialManager.ClientApp
         }
         public void SetEditingPropertyIncome(bool canEdit)
         {
-            foreach (var c in _dailyCategory_for_Income)
+            foreach (var c in _incomes)
             {
                 c.CanEdit = canEdit;
                 
             }
         }
-
-
-        /// <summary>
-        /// //////
-        /// </summary>
-
-
 
         public void SaveChangesIncome()
         {
@@ -318,33 +309,24 @@ namespace FinancialManager.ClientApp
         }
 
 
-
         private void UpDateAmountIncome()
         {
             AmountIncome = GetAmountIncome();
 
-            foreach (var c in _dailyCategory_for_Income)
+            foreach (var c in _incomes)
             {
                 c.UpdateAmountIncome();
             }
         }
 
-
-
-
-
-        /// <summary>
-        /// ///////
-        /// </summary>
-
         public void DeleteCategoryIncome()
         {
             try
             {
-                var category = _dailyCategory_for_Income.Single(c => c.IsChecked == true);
+                var category = _incomes.Single(c => c.IsChecked == true);
 
-                _dailyCategory_for_Income.Remove(category);
-                _dBContext.Category_For_Incomes.Remove(category);
+                _incomes.Remove(category);
+                _dBContext.Incomes.Remove(category);
                 _dBContext.SaveChanges();
             }
             catch (Exception ex)
@@ -354,32 +336,15 @@ namespace FinancialManager.ClientApp
         }
 
 
-        public void AddCateroryIncome(Category_for_Income i)
+        public void AddCateroryIncome(Income i)
         {
-            _dailyCategory_for_Income.Add(i);
-            _dBContext.Category_For_Incomes.Add(i);
+            _incomes.Add(i);
+            i.Month = Date;
+            _dBContext.Incomes.Add(i);
+            
             _dBContext.SaveChanges();
+
         }
-
-
-       /* public void AddItemIncome(ExpenseItem i)
-        {
-            try
-            {
-                _dailyCategory_for_Income.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
-                _dBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }*/
-
-
-
-
-
-
 
         private Expense GetValuesForDiagram(int month)
         {
