@@ -18,7 +18,9 @@ namespace FinancialManager.ClientApp
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
         private ObservableCollection<Category_for_Income> _dailyCategory_for_Income;
+        //private ObservableCollection<Income> _incomes;
         private decimal _amount;
+       
 
         public ViewModel()
         {
@@ -40,6 +42,8 @@ namespace FinancialManager.ClientApp
         public int NumberOfChanges { get; set; }
 
         public decimal Amount { get => GetAmount(); private set => _amount = value; }
+        public decimal AmountIncome { get => GetAmountIncome(); private set => _amount = value; }
+        
 
         public decimal CurrentAmount { get; set; }
 
@@ -56,6 +60,21 @@ namespace FinancialManager.ClientApp
 
             return amount;
         }
+        private decimal GetAmountIncome()
+        {
+            decimal amount = 0;
+
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                amount += c.AmountIncome;
+               /* foreach (var item in c.Incomes)
+                {
+                    amount += item.Amount;
+                }*/
+            }
+
+            return amount;
+        }
 
         private void UpDateAmount()
         {
@@ -66,7 +85,8 @@ namespace FinancialManager.ClientApp
                 c.UpdateAmount();
             }
         }
-
+        
+       
         public void SaveChanges()
         {
             try
@@ -226,6 +246,101 @@ namespace FinancialManager.ClientApp
             plot.Plot.Legend();
             plot.Refresh();
         }
+        public void SetEditingPropertyIncome(bool canEdit)
+        {
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                c.CanEdit = canEdit;
+                
+            }
+        }
+
+
+        /// <summary>
+        /// //////
+        /// </summary>
+
+
+
+        public void SaveChangesIncome()
+        {
+            try
+            {
+                _dBContext.SaveChanges();
+
+                UpDateAmountIncome();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            NumberOfChanges = 0;
+        }
+
+
+
+        private void UpDateAmountIncome()
+        {
+            AmountIncome = GetAmountIncome();
+
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                c.UpdateAmountIncome();
+            }
+        }
+
+
+
+
+
+        /// <summary>
+        /// ///////
+        /// </summary>
+
+        public void DeleteCategoryIncome()
+        {
+            try
+            {
+                var category = _dailyCategory_for_Income.Single(c => c.IsChecked == true);
+
+                _dailyCategory_for_Income.Remove(category);
+                _dBContext.Category_For_Incomes.Remove(category);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        public void AddCateroryIncome(Category_for_Income i)
+        {
+            _dailyCategory_for_Income.Add(i);
+            _dBContext.Category_For_Incomes.Add(i);
+            _dBContext.SaveChanges();
+        }
+
+
+       /* public void AddItemIncome(ExpenseItem i)
+        {
+            try
+            {
+                _dailyCategory_for_Income.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }*/
+
+
+
+
+
+
 
         public void Dispose()
         {

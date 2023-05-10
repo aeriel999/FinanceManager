@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_access;
 
@@ -11,9 +12,11 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    partial class FinancialManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230510065651_changeIncome")]
+    partial class changeIncome
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
