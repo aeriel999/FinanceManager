@@ -20,24 +20,24 @@ namespace data_access.Helpers
                 {
                     Id = 1,
                     Name="Utility payments",
-                    //PlaneExpense=5000,
-                    //ActuallyExpense=2500
+                    PlaneExpense=5000,
+                    ActuallyExpense=2500
                     
                 },
                 new Category_for_expense()
                 {
                     Id = 2,
                     Name="Products",
-                    //PlaneExpense=3000,
-                    //ActuallyExpense = 2500
+                    PlaneExpense=3000,
+                    ActuallyExpense = 2500
 
                 },
                 new Category_for_expense()
                 {
                     Id = 3,
                     Name="Money for the road",
-                    //PlaneExpense=1500,
-                    //ActuallyExpense = 1200
+                    PlaneExpense=1500,
+                    ActuallyExpense = 1200
                     
 
                 }
@@ -102,7 +102,7 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=20000,
-                    IncomeCategoryId=1
+                    Category_for_IncomeId=1
                 },
                 new Income()
                 {
@@ -110,7 +110,7 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=5000,
-                    IncomeCategoryId=2
+                    Category_for_IncomeId=2
                 },
                 new Income()
                 {
@@ -118,9 +118,10 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=10000,
-                    IncomeCategoryId=3
+                    Category_for_IncomeId=3
                 }
             });
         }
+     
     }
 }

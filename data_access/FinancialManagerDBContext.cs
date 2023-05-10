@@ -22,12 +22,13 @@ namespace data_access
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Category_for_Income> Category_For_Incomes { get; set; }
+       
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Data Source=.;
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
                                            Initial Catalog = FinancialManager_Db;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
@@ -54,21 +55,30 @@ namespace data_access
             modelBuilder.Entity<Income>().ToTable(e => e.HasCheckConstraint("Amount", "Amount >= 0"));
             modelBuilder.Entity<Category_for_Income>().HasKey(ci => ci.Id);
             modelBuilder.Entity<Category_for_Income>().Property(ci => ci.Name).HasMaxLength(100).IsRequired();
+           
 
             ////////Підключення по ключам
             modelBuilder.Entity<Category_for_expense>().HasMany(c=>c.Items).WithOne(c=>c.category).HasForeignKey(c=>c.CategoryId);
+
+           
+          
+
             modelBuilder.Entity<Income>().HasOne(i => i.category).WithMany(i => i.Incomes).HasForeignKey(i=>i.IncomeCategoryId);
+
 
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.PlaneExpense).HasColumnType("money");
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.ActuallyExpense).HasColumnType("money");
             modelBuilder.Entity<ExpenseItem>().Property(e => e.Amount).HasColumnType("money");
+
             modelBuilder.Entity<Expense>().Property(e => e.PlaneAmount).HasColumnType("money");
             modelBuilder.Entity<Expense>().Property(e => e.CurrentAmount).HasColumnType("money");
+
 
             modelBuilder.SeedCategory();
             modelBuilder.SeedExpenseItem();
             modelBuilder.SeedCategoryIncome();
             modelBuilder.SeedIncome();
+
         }
 
     }

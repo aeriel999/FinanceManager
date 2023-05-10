@@ -15,7 +15,9 @@ namespace data_access.Entities
             Name = name;
         }
 
+
         public Category_for_expense() { }
+        
 
         public int Id { get; set; }
 
