@@ -20,24 +20,24 @@ namespace data_access.Helpers
                 {
                     Id = 1,
                     Name="Utility payments",
-                    //PlaneExpense=5000,
-                    //ActuallyExpense=2500
+                    PlaneExpense=5000,
+                    ActuallyExpense=2500
                     
                 },
                 new Category_for_expense()
                 {
                     Id = 2,
                     Name="Products",
-                    //PlaneExpense=3000,
-                    //ActuallyExpense = 2500
+                    PlaneExpense=3000,
+                    ActuallyExpense = 2500
 
                 },
                 new Category_for_expense()
                 {
                     Id = 3,
                     Name="Money for the road",
-                    //PlaneExpense=1500,
-                    //ActuallyExpense = 1200
+                    PlaneExpense=1500,
+                    ActuallyExpense = 1200
                     
 
                 }
@@ -69,38 +69,6 @@ namespace data_access.Helpers
                     //Amount=1200
                 }
             });
-        }
-        public static void SeedExpense(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Expense>().HasData(new Expense[]
-            {
-                new Expense()
-                {
-                    Id=1,
-                    Month="April",
-                    Year=2023,
-                    Amount=1000,
-                    CategoryId=3,
-                },
-                 new Expense()
-                {
-                    Id=2,
-                    Month="April",
-                    Year=2023,
-                    Amount=3000,
-                    CategoryId=2,
-                },
-                  new Expense()
-                {
-                    Id=3,
-                    Month="April",
-                    Year=2023,
-                    Amount=2000,
-                    CategoryId=1,
-                }
-
-            });
-            
         }
         public static void SeedCategoryIncome(this ModelBuilder modelBuilder)
         {
@@ -134,7 +102,7 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=20000,
-                    IncomeCategoryId=1
+                    Category_for_IncomeId=1
                 },
                 new Income()
                 {
@@ -142,7 +110,7 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=5000,
-                    IncomeCategoryId=2
+                    Category_for_IncomeId=2
                 },
                 new Income()
                 {
@@ -150,9 +118,10 @@ namespace data_access.Helpers
                     Month="March",
                     Year=2023,
                     Amount=10000,
-                    IncomeCategoryId=3
+                    Category_for_IncomeId=3
                 }
             });
         }
+     
     }
 }

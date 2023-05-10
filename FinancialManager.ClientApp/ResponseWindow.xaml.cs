@@ -1,4 +1,6 @@
 ﻿using data_access.Entities;
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,6 +11,8 @@ namespace FinancialManager.ClientApp
         private ViewModel _model = new ViewModel();
 
         private bool _isBusy = true;
+
+        private AddItemWindow? _window;
 
         public ResponseWindow()
         {
@@ -51,6 +55,10 @@ namespace FinancialManager.ClientApp
 
         private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
+            //var window = new MainWindow();
+
+            //window.Show();
+
             this.Close();
         }
 
@@ -60,9 +68,9 @@ namespace FinancialManager.ClientApp
 
             if (id >= 0)
             {
-                var itemWindow = new AddItemWindow(_model.GetCheckedId());
+                _window = new AddItemWindow(_model.GetCheckedId());
 
-                itemWindow.Show();
+                _window.Show();
 
                 this.Close();
             }
@@ -87,5 +95,15 @@ namespace FinancialManager.ClientApp
         {
             _model.DeleteItem();
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (_window == null)
+            {
+                var w = new MainWindow();
+                w.ShowDialog();
+            }
+        }
+
     }
 }

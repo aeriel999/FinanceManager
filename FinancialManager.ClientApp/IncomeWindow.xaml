@@ -24,31 +24,53 @@
             <StackPanel
     Orientation="Horizontal">
                 <DatePicker SelectedDate="{Binding Date, Mode=OneWay}" SelectedDateFormat="Long" Margin="2,5"></DatePicker>
-                <TextBlock VerticalAlignment="Center" Margin="2,5" FontSize="20">Response: 
-                    <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
-                <Button Margin="5">
+                <TextBlock  VerticalAlignment="Center" Margin="2,5" FontSize="20">Income: 
+                    <Run Text="{Binding AmountIncome, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run> UAH</TextBlock>
+                <Button x:Name="EditBtn" Click="EditBtn_Click"  Margin="5">
                     Edit
                 </Button>
                 <materialDesign:Badged  Margin="2,5"
-      Badge="1 changed"
+                                        
+     Badge="{Binding NumberOfChanges}"
       VerticalAlignment="Center">
 
-                    <Button Margin="5">
+                    <Button 
+                        Name="SaveBTN" Click="SaveBTN_Click"
+                        Margin="5"
+                            >
                         Save
                     </Button>
+                    
 
+                    
                 </materialDesign:Badged>
+                <Button x:Name="closeBtn" Click="closeBtn_Click">
+                    Exit
+                </Button>
             </StackPanel>
 
         </materialDesign:ColorZone>
         <Grid>
-            <DataGridColumnHeader Width="800" Height="50" VerticalAlignment="Top">
 
-                <Button Width="800" Height="30"  Content="Add Category"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="310"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="10,0,0,0" Text="Enter new category name:"  Grid.Column="0" VerticalAlignment="Center" FontSize="16"/>
+            <TextBox x:Name="txtBoxNameIncome" Grid.Column="1" Margin="5"/>
+            <Button x:Name="AddBtn" Click="AddBtn_Click" Width="300" Height="30"  Content="Add Category" Grid.Column="2" 
+                        HorizontalAlignment="Right"
+                        Margin="0,0,5,0"/>
 
-            </DataGridColumnHeader>
-            <DataGridColumnHeader Height="325" VerticalAlignment="Bottom">
-                <ListBox ItemsSource="{Binding Category_for_Income}">
+            
+         
+                <ListBox ItemsSource="{Binding Category_for_Income}" Grid.Row="1"
+                         Grid.ColumnSpan="3">
 
                     <ListBox.ItemTemplate>
 
@@ -59,26 +81,32 @@
                                 <Grid>
 
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="500"/>
-                                        <ColumnDefinition Width="100"/>
                                         <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="160"/>
+                       
+                                        <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" Margin="3" Grid.Column="0"/>
-                                    <TextBox Grid.Column="1" Text="0" Width="100" HorizontalAlignment="Center"
+                                <CheckBox Grid.Column="0" 
+                                          IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="5,0,5,0"></CheckBox>
+                                <TextBox  TextChanged="CategoryNameIn_TextChanged_1" Grid.Column="1" Text="{Binding Name, Mode=TwoWay}"  IsEnabled="{Binding CanEdit}" Margin="0,0,5,0"
+                                         x:Name="CategoryNameIn"
+                                          LostFocus="CategoryNameIn_LostFocus"/>
+                                <TextBox IsEnabled="{Binding CanEdit}" Grid.Column="2"  Width="100" HorizontalAlignment="Center"
+                                         Text="{Binding AmountIncome,Mode=TwoWay}" 
     VerticalAlignment="Top"
     materialDesign:HintAssist.Hint="Amount"
     materialDesign:TextFieldAssist.CharacterCounterVisibility="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxTextCountComboBox, Converter={StaticResource BooleanToVisibilityConverter}}"
     MaxLength="40"
     Style="{StaticResource MaterialDesignFilledTextBox}"
     TextWrapping="Wrap" />
-                                    <TextBlock Text="UAN" Grid.Column="2" HorizontalAlignment="Right" Margin="3"/>
-                                </Grid>
+                                <Button x:Name="DeleteBtn" Click="DeleteBtn_Click" Width="100" HorizontalAlignment="Center" Content="Delete" Grid.Column="4" IsEnabled="{Binding IsChecked, Mode=TwoWay}"/>
+                            </Grid>
                             </ListBoxItem>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </DataGridColumnHeader>
+           
         </Grid>
     </DockPanel>
 </Window>

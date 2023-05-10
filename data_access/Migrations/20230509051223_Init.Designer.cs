@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_access;
 
@@ -11,9 +12,11 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    partial class FinancialManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230509051223_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,23 +87,23 @@ namespace data_access.Migrations
                         new
                         {
                             Id = 1,
-                            ActuallyExpense = 2500m,
+                            ActuallyExpense = 0m,
                             Name = "Utility payments",
-                            PlaneExpense = 5000m
+                            PlaneExpense = 0m
                         },
                         new
                         {
                             Id = 2,
-                            ActuallyExpense = 2500m,
+                            ActuallyExpense = 0m,
                             Name = "Products",
-                            PlaneExpense = 3000m
+                            PlaneExpense = 0m
                         },
                         new
                         {
                             Id = 3,
-                            ActuallyExpense = 1200m,
+                            ActuallyExpense = 0m,
                             Name = "Money for the road",
-                            PlaneExpense = 1500m
+                            PlaneExpense = 0m
                         });
                 });
 
@@ -112,6 +115,9 @@ namespace data_access.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("Category_for_expenseId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("CurrentAmount")
                         .HasColumnType("money");
 
@@ -122,6 +128,8 @@ namespace data_access.Migrations
                         .HasColumnType("money");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Category_for_expenseId");
 
                     b.ToTable("Expenses", t =>
                         {
@@ -194,7 +202,7 @@ namespace data_access.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Category_for_IncomeId")
+                    b.Property<int>("IncomeCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Month")
@@ -207,7 +215,7 @@ namespace data_access.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category_for_IncomeId");
+                    b.HasIndex("IncomeCategoryId");
 
                     b.ToTable("Incomes", t =>
                         {
@@ -220,7 +228,7 @@ namespace data_access.Migrations
                         {
                             Id = 1,
                             Amount = 20000m,
-                            Category_for_IncomeId = 1,
+                            IncomeCategoryId = 1,
                             Month = "March",
                             Year = 2023
                         },
@@ -228,7 +236,7 @@ namespace data_access.Migrations
                         {
                             Id = 2,
                             Amount = 5000m,
-                            Category_for_IncomeId = 2,
+                            IncomeCategoryId = 2,
                             Month = "March",
                             Year = 2023
                         },
@@ -236,10 +244,17 @@ namespace data_access.Migrations
                         {
                             Id = 3,
                             Amount = 10000m,
-                            Category_for_IncomeId = 3,
+                            IncomeCategoryId = 3,
                             Month = "March",
                             Year = 2023
                         });
+                });
+
+            modelBuilder.Entity("data_access.Entities.Expense", b =>
+                {
+                    b.HasOne("data_access.Entities.Category_for_expense", null)
+                        .WithMany("Expenses")
+                        .HasForeignKey("Category_for_expenseId");
                 });
 
             modelBuilder.Entity("data_access.Entities.ExpenseItem", b =>
@@ -255,13 +270,13 @@ namespace data_access.Migrations
 
             modelBuilder.Entity("data_access.Entities.Income", b =>
                 {
-                    b.HasOne("data_access.Entities.Category_for_Income", "Category")
+                    b.HasOne("data_access.Entities.Category_for_Income", "category")
                         .WithMany("Incomes")
-                        .HasForeignKey("Category_for_IncomeId")
+                        .HasForeignKey("IncomeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("category");
                 });
 
             modelBuilder.Entity("data_access.Entities.Category_for_Income", b =>
@@ -271,6 +286,8 @@ namespace data_access.Migrations
 
             modelBuilder.Entity("data_access.Entities.Category_for_expense", b =>
                 {
+                    b.Navigation("Expenses");
+
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618

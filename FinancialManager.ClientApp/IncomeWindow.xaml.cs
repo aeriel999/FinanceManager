@@ -1,4 +1,6 @@
-﻿using System;
+﻿using data_access.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,10 +19,64 @@ namespace FinancialManager.ClientApp;
 
 public partial class IncomeWindow : Window
 {
+    private bool _isBusy = true;
     private ViewModel _model = new ViewModel();
     public IncomeWindow()
     {
         InitializeComponent();
         DataContext = _model;
+    }
+
+    private void EditBtn_Click(object sender, RoutedEventArgs e)
+    {
+        _model.SetEditingPropertyIncome(true);
+    }
+
+   
+
+    private void CategoryNameIn_LostFocus(object sender, RoutedEventArgs e)
+    {
+        _isBusy = true;
+    }
+
+    private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBoxResult result = MessageBox.Show("When deleted, all data will be deleted",
+               "Confirmation", MessageBoxButton.YesNo);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            _model.DeleteCategoryIncome();
+        }
+    }
+
+    private void AddBtn_Click(object sender, RoutedEventArgs e)
+    {
+        if (txtBoxNameIncome.Text.Length > 3)
+            _model.AddCateroryIncome(new Category_for_Income(txtBoxNameIncome.Text));
+        else
+            MessageBox.Show("Enter name for new category");
+    }
+
+    private void closeBtn_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void CategoryNameIn_TextChanged_1(object sender, TextChangedEventArgs e)
+    {
+        if (_isBusy)
+        {
+            _model.NumberOfChanges++;
+            _isBusy = false;
+        }
+
+    }
+
+    private void SaveBTN_Click(object sender, RoutedEventArgs e)
+    {
+        _model.SaveChanges();
+        _model.SetEditingPropertyIncome(false);
+
     }
 }

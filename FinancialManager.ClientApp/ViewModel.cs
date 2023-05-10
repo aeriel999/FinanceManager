@@ -18,7 +18,9 @@ namespace FinancialManager.ClientApp
         private FinancialManagerDBContext _dBContext = new FinancialManagerDBContext();
         private ObservableCollection<Category_for_expense> _dailyCategoryExpenses;
         private ObservableCollection<Category_for_Income> _dailyCategory_for_Income;
+        //private ObservableCollection<Income> _incomes;
         private decimal _amount;
+       
 
         public ViewModel()
         {
@@ -35,11 +37,13 @@ namespace FinancialManager.ClientApp
 
         public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
-        public string Date => DateTime.Now.ToString();
+        public DateTime Date => DateTime.Now;
 
         public int NumberOfChanges { get; set; }
 
         public decimal Amount { get => GetAmount(); private set => _amount = value; }
+        public decimal AmountIncome { get => GetAmountIncome(); private set => _amount = value; }
+        
 
         public decimal CurrentAmount { get; set; }
 
@@ -54,6 +58,23 @@ namespace FinancialManager.ClientApp
                 amount += c.PlaneExpense;
             }
 
+            UpdateStatisticPlainResponse(amount);
+
+            return amount;
+        }
+        private decimal GetAmountIncome()
+        {
+            decimal amount = 0;
+
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                amount += c.AmountIncome;
+               /* foreach (var item in c.Incomes)
+                {
+                    amount += item.Amount;
+                }*/
+            }
+
             return amount;
         }
 
@@ -66,6 +87,28 @@ namespace FinancialManager.ClientApp
                 c.UpdateAmount();
             }
         }
+
+        
+       
+
+
+        private void UpdateStatisticPlainResponse(decimal amount)
+        {
+            try
+            {
+                if (_dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day) != null)
+                    _dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = amount;
+                else
+                    _dBContext.Expenses.Add(new Expense(amount, 0) { Day = Date });
+
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
 
         public void SaveChanges()
         {
@@ -201,9 +244,25 @@ namespace FinancialManager.ClientApp
             CountCurrentAmount();
 
             _dBContext.SaveChanges();
+
+            UpdateStatisticCurrentResponse();
         }
 
-        public void GetPlaneAmounValeus(WpfPlot plot)
+        private void UpdateStatisticCurrentResponse()
+        {
+            try
+            {
+                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).CurrentAmount = CurrentAmount;
+
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void MakePlaneAmounDiagram(WpfPlot plot)
         {
             int size = _dailyCategoryExpenses.Count;
 
@@ -226,15 +285,145 @@ namespace FinancialManager.ClientApp
             plot.Plot.Legend();
             plot.Refresh();
         }
+        public void SetEditingPropertyIncome(bool canEdit)
+        {
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                c.CanEdit = canEdit;
+                
+            }
+        }
+
+
+        /// <summary>
+        /// //////
+        /// </summary>
+
+
+
+        public void SaveChangesIncome()
+        {
+            try
+            {
+                _dBContext.SaveChanges();
+
+                UpDateAmountIncome();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            NumberOfChanges = 0;
+        }
+
+
+
+        private void UpDateAmountIncome()
+        {
+            AmountIncome = GetAmountIncome();
+
+            foreach (var c in _dailyCategory_for_Income)
+            {
+                c.UpdateAmountIncome();
+            }
+        }
+
+
+
+
+
+        /// <summary>
+        /// ///////
+        /// </summary>
+
+        public void DeleteCategoryIncome()
+        {
+            try
+            {
+                var category = _dailyCategory_for_Income.Single(c => c.IsChecked == true);
+
+                _dailyCategory_for_Income.Remove(category);
+                _dBContext.Category_For_Incomes.Remove(category);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        public void AddCateroryIncome(Category_for_Income i)
+        {
+            _dailyCategory_for_Income.Add(i);
+            _dBContext.Category_For_Incomes.Add(i);
+            _dBContext.SaveChanges();
+        }
+
+
+       /* public void AddItemIncome(ExpenseItem i)
+        {
+            try
+            {
+                _dailyCategory_for_Income.Single(d => d.Id == i.CategoryId).AddItenInCat(i);
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }*/
+
+
+
+
+
+
+
+        private Expense GetValuesForDiagram(int month)
+        {
+            return _dBContext.Expenses.Where(e => e.Day.Month == month).OrderByDescending(e => e.Day.Day).FirstOrDefault();
+        }
+
+        public void MakeResponseDiaram(WpfPlot plot)
+        {
+            int size = 13;
+
+            Expense expense;
+
+            double[] valuesA = new double[size];
+
+            double[] valuesB =  new double[size];
+
+
+            for (int i = 1; i < size; i++)
+            {
+                expense = GetValuesForDiagram(i);
+
+                if (expense != null)
+                {
+                    valuesA[i] = double.Parse(expense.PlaneAmount.ToString());
+                    valuesB[i] = double.Parse(expense.CurrentAmount.ToString());
+                }
+                else 
+                {
+                    valuesA[i] = 0;
+                    valuesB[i] = 0;
+                }
+            }
+
+            plot.Plot.AddBar(valuesA);
+            plot.Plot.AddBar(valuesB);
+
+            plot.Plot.SetAxisLimits(yMin:0, xMin:0, xMax: size);
+
+            plot.Refresh();
+        }
 
         public void Dispose()
         {
             _dBContext.Dispose();
         }
-    }
-
-    public class MonthStatistic
-    {
-
     }
 }

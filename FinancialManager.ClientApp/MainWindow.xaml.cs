@@ -55,6 +55,8 @@ public partial class MainWindow : Window
         var responseWindow = new ResponseWindow();
 
         responseWindow.Show();
+
+        this.Close();
     }
 
     private void OpenIncomeWindowBtnClick(object sender, RoutedEventArgs e)
@@ -72,19 +74,7 @@ public partial class MainWindow : Window
 
     private void formsPlot1_Loaded(object sender, RoutedEventArgs e)
     {
-        _viewModel.GetPlaneAmounValeus(formsPlot1);
-
-            //double[] values = { 778, 43, 283, 76, 184 };
-            //string[] SliceLabels = { "Cat", "Dog", "Snake", "Frog", "Fox" };
-            //string[] LegendLabels = { "Meow", "Woof", "Ssst", "Ribbit", "RingDing" };
-
-            //var pie = formsPlot1.Plot.AddPie(values);
-            //pie.SliceLabels = SliceLabels;
-            //pie.ShowLabels = true;
-
-            //pie.LegendLabels = LegendLabels;
-            //formsPlot1.Plot.Legend();
-            //formsPlot1.Refresh();
+        _viewModel.MakePlaneAmounDiagram(formsPlot1);
     }
 
     private void ProgressBar_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

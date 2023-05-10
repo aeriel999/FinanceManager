@@ -12,8 +12,8 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    [Migration("20230502123235_Init")]
-    partial class Init
+    [Migration("20230509052659_statistic")]
+    partial class statistic
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,59 +115,22 @@ namespace data_access.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("CurrentAmount")
                         .HasColumnType("money");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Day")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Month")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
+                    b.Property<decimal>("PlaneAmount")
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Expenses", t =>
                         {
-                            t.HasCheckConstraint("Amount", "Amount >= 0");
-                        });
+                            t.HasCheckConstraint("CurrentAmount", "CurrentAmount >= 0");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Amount = 1000m,
-                            CategoryId = 3,
-                            Day = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Month = "April",
-                            Year = 2023
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Amount = 3000m,
-                            CategoryId = 2,
-                            Day = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Month = "April",
-                            Year = 2023
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Amount = 2000m,
-                            CategoryId = 1,
-                            Day = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Month = "April",
-                            Year = 2023
+                            t.HasCheckConstraint("PlaneAmount", "PlaneAmount >= 0");
                         });
                 });
 
@@ -196,8 +159,7 @@ namespace data_access.Migrations
 
                     b.ToTable("ExpenseItems", t =>
                         {
-                            t.HasCheckConstraint("Amount", "Amount>= 0")
-                                .HasName("Amount1");
+                            t.HasCheckConstraint("Amount", "Amount>= 0");
                         });
 
                     b.HasData(
@@ -253,7 +215,7 @@ namespace data_access.Migrations
                     b.ToTable("Incomes", t =>
                         {
                             t.HasCheckConstraint("Amount", "Amount >= 0")
-                                .HasName("Amount2");
+                                .HasName("Amount1");
                         });
 
                     b.HasData(
@@ -281,17 +243,6 @@ namespace data_access.Migrations
                             Month = "March",
                             Year = 2023
                         });
-                });
-
-            modelBuilder.Entity("data_access.Entities.Expense", b =>
-                {
-                    b.HasOne("data_access.Entities.Category_for_expense", "category")
-                        .WithMany("Expenses")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("category");
                 });
 
             modelBuilder.Entity("data_access.Entities.ExpenseItem", b =>
@@ -323,8 +274,6 @@ namespace data_access.Migrations
 
             modelBuilder.Entity("data_access.Entities.Category_for_expense", b =>
                 {
-                    b.Navigation("Expenses");
-
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618

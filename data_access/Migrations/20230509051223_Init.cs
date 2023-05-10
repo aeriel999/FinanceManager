@@ -20,8 +20,8 @@ namespace data_access.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PlaneExpense = table.Column<decimal>(type: "money", nullable: false),
-                    ActuallyExpense = table.Column<decimal>(type: "money", nullable: false)
+                    ActuallyExpense = table.Column<decimal>(type: "money", nullable: false),
+                    PlaneExpense = table.Column<decimal>(type: "money", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +54,7 @@ namespace data_access.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExpenseItems", x => x.Id);
-                    table.CheckConstraint("Amount1", "Amount>= 0");
+                    table.CheckConstraint("Amount", "Amount>= 0");
                     table.ForeignKey(
                         name: "FK_ExpenseItems_Categories_For_Expense_CategoryId",
                         column: x => x.CategoryId,
@@ -69,22 +69,21 @@ namespace data_access.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Month = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
                     Day = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "money", nullable: false)
+                    PlaneAmount = table.Column<decimal>(type: "money", nullable: false),
+                    CurrentAmount = table.Column<decimal>(type: "money", nullable: false),
+                    Category_for_expenseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Expenses", x => x.Id);
-                    table.CheckConstraint("Amount", "Amount >= 0");
+                    table.CheckConstraint("CurrentAmount", "CurrentAmount >= 0");
+                    table.CheckConstraint("PlaneAmount", "PlaneAmount >= 0");
                     table.ForeignKey(
-                        name: "FK_Expenses_Categories_For_Expense_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Expenses_Categories_For_Expense_Category_for_expenseId",
+                        column: x => x.Category_for_expenseId,
                         principalTable: "Categories_For_Expense",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -101,7 +100,7 @@ namespace data_access.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Incomes", x => x.Id);
-                    table.CheckConstraint("Amount2", "Amount >= 0");
+                    table.CheckConstraint("Amount1", "Amount >= 0");
                     table.ForeignKey(
                         name: "FK_Incomes_Category_For_Incomes_IncomeCategoryId",
                         column: x => x.IncomeCategoryId,
@@ -141,16 +140,6 @@ namespace data_access.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Expenses",
-                columns: new[] { "Id", "Amount", "CategoryId", "Day", "Month", "Year" },
-                values: new object[,]
-                {
-                    { 1, 1000m, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "April", 2023 },
-                    { 2, 3000m, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "April", 2023 },
-                    { 3, 2000m, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "April", 2023 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Incomes",
                 columns: new[] { "Id", "Amount", "IncomeCategoryId", "Month", "Year" },
                 values: new object[,]
@@ -166,9 +155,9 @@ namespace data_access.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Expenses_CategoryId",
+                name: "IX_Expenses_Category_for_expenseId",
                 table: "Expenses",
-                column: "CategoryId");
+                column: "Category_for_expenseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Incomes_IncomeCategoryId",

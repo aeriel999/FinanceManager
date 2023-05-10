@@ -1,6 +1,7 @@
 ﻿using data_access.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,8 @@ namespace FinancialManager.ClientApp
             this.Close();
         }
 
-        protected override void OnClosed(EventArgs e)
+
+        protected override void OnClosing(CancelEventArgs e)
         {
             var responseWindow = new ResponseWindow();
             responseWindow.Show();
