@@ -94,17 +94,19 @@
                                            FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" 
                                            Margin="20,0,0,0"></TextBlock>
 
-                                <TextBlock Grid.Column="1" Margin="5" ToolTip="Spent" Text="{Binding ActuallyExpense, StringFormat='0,0.00'}" 
+                                <TextBlock Grid.Column="1" Margin="5" ToolTip="Spent" Text="{Binding PlaneExpense, StringFormat='0,0.00'}" 
 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" /> 
                                 <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" 
                                              Foreground="{DynamicResource PrimaryHueDarkBrush}" Height="10" 
                                              Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"
-                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}" DataContextChanged="ProgressBar_DataContextChanged">
+                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}" 
+                                             ValueChanged="ProgressBar_ValueChanged"
+                                             DataContextChanged="ProgressBar_DataContextChanged">
                                 </ProgressBar>
 
-                                <TextBlock Grid.Column="3" Margin="5" ToolTip="Plane" Text="{Binding PlaneExpense, StringFormat='0,0.00'}" 
+                                <TextBlock Grid.Column="3" Margin="5" ToolTip="Plane" Text="{Binding ActuallyExpense, StringFormat='0,0.00'}" 
 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>

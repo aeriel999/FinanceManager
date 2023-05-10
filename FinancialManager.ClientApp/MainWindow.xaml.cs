@@ -92,5 +92,21 @@ public partial class MainWindow : Window
         }
 
     }
+
+    private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        foreach (var item in _viewModel.DailyCategoryExpenses)
+        {
+            if (item.PlaneExpense < item.ActuallyExpense)
+            {
+                decimal Max = item.ActuallyExpense;
+                decimal Value = item.PlaneExpense;
+                ((ProgressBar)sender).Background = new SolidColorBrush(Colors.Red);
+                ((ProgressBar)sender).Maximum = (int)Max;
+                ((ProgressBar)sender).Value = (int)Value;
+            }
+        }
+
+    }
 }
 
