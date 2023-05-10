@@ -33,9 +33,6 @@ namespace data_access
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
                                            ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-
-
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,9 +41,10 @@ namespace data_access
             modelBuilder.Entity<Category_for_expense>().HasKey(c => c.Id);
             modelBuilder.Entity<Category_for_expense>().Property(c => c.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Expense>().HasKey(c => c.Id);
-            modelBuilder.Entity<Expense>().Property(e=>e.Month).HasMaxLength(50).IsRequired();
-            modelBuilder.Entity<Expense>().Property(e=>e.Year).IsRequired();
-            modelBuilder.Entity<Expense>().ToTable(e => e.HasCheckConstraint("Amount", "Amount >= 0"));
+            //modelBuilder.Entity<Expense>().Property(e=>e.Month).HasMaxLength(50).IsRequired();
+            //modelBuilder.Entity<Expense>().Property(e=>e.Year).IsRequired();
+            modelBuilder.Entity<Expense>().ToTable(e => e.HasCheckConstraint("PlaneAmount", "PlaneAmount >= 0"));
+            modelBuilder.Entity<Expense>().ToTable(e => e.HasCheckConstraint("CurrentAmount", "CurrentAmount >= 0"));
             modelBuilder.Entity<ExpenseItem>().HasKey(ei => ei.Id);
             modelBuilder.Entity<ExpenseItem>().Property(ei => ei.Name).HasMaxLength(100).IsRequired();
             //modelBuilder.Entity<ExpenseItem>().Property(ei=>ei.Amount).IsRequired();
@@ -61,22 +59,25 @@ namespace data_access
 
             ////////Підключення по ключам
             modelBuilder.Entity<Category_for_expense>().HasMany(c=>c.Items).WithOne(c=>c.category).HasForeignKey(c=>c.CategoryId);
-            modelBuilder.Entity<Category_for_expense>().HasMany(c => c.Expenses).WithOne(c => c.category).HasForeignKey(c => c.CategoryId);
+
+           
           
+
+            modelBuilder.Entity<Income>().HasOne(i => i.category).WithMany(i => i.Incomes).HasForeignKey(i=>i.IncomeCategoryId);
+
 
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.PlaneExpense).HasColumnType("money");
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.ActuallyExpense).HasColumnType("money");
             modelBuilder.Entity<ExpenseItem>().Property(e => e.Amount).HasColumnType("money");
-            modelBuilder.Entity<Expense>().Property(e => e.Amount).HasColumnType("money");
-          
+
+            modelBuilder.Entity<Expense>().Property(e => e.PlaneAmount).HasColumnType("money");
+            modelBuilder.Entity<Expense>().Property(e => e.CurrentAmount).HasColumnType("money");
+
 
             modelBuilder.SeedCategory();
             modelBuilder.SeedExpenseItem();
-            modelBuilder.SeedExpense();
             modelBuilder.SeedCategoryIncome();
             modelBuilder.SeedIncome();
-         
-
 
         }
 

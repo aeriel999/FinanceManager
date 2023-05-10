@@ -70,38 +70,6 @@ namespace data_access.Helpers
                 }
             });
         }
-        public static void SeedExpense(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Expense>().HasData(new Expense[]
-            {
-                new Expense()
-                {
-                    Id=1,
-                    Month="April",
-                    Year=2023,
-                    Amount=1000,
-                    CategoryId=3,
-                },
-                 new Expense()
-                {
-                    Id=2,
-                    Month="April",
-                    Year=2023,
-                    Amount=3000,
-                    CategoryId=2,
-                },
-                  new Expense()
-                {
-                    Id=3,
-                    Month="April",
-                    Year=2023,
-                    Amount=2000,
-                    CategoryId=1,
-                }
-
-            });
-            
-        }
         public static void SeedCategoryIncome(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category_for_Income>().HasData(new Category_for_Income[]

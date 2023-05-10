@@ -37,7 +37,7 @@ namespace FinancialManager.ClientApp
 
         public IEnumerable<Category_for_Income> Category_for_Income => _dailyCategory_for_Income;
 
-        public string Date => DateTime.Now.ToString();
+        public DateTime Date => DateTime.Now;
 
         public int NumberOfChanges { get; set; }
 
@@ -57,6 +57,8 @@ namespace FinancialManager.ClientApp
             {
                 amount += c.PlaneExpense;
             }
+
+            UpdateStatisticPlainResponse(amount);
 
             return amount;
         }
@@ -85,8 +87,29 @@ namespace FinancialManager.ClientApp
                 c.UpdateAmount();
             }
         }
+
         
        
+
+
+        private void UpdateStatisticPlainResponse(decimal amount)
+        {
+            try
+            {
+                if (_dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day) != null)
+                    _dBContext.Expenses.FirstOrDefault(e => e.Day.Day == Date.Day).PlaneAmount = amount;
+                else
+                    _dBContext.Expenses.Add(new Expense(amount, 0) { Day = Date });
+
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
         public void SaveChanges()
         {
             try
@@ -221,9 +244,25 @@ namespace FinancialManager.ClientApp
             CountCurrentAmount();
 
             _dBContext.SaveChanges();
+
+            UpdateStatisticCurrentResponse();
         }
 
-        public void GetPlaneAmounValeus(WpfPlot plot)
+        private void UpdateStatisticCurrentResponse()
+        {
+            try
+            {
+                _dBContext.Expenses.SingleOrDefault(e => e.Day.Day == Date.Day).CurrentAmount = CurrentAmount;
+
+                _dBContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void MakePlaneAmounDiagram(WpfPlot plot)
         {
             int size = _dailyCategoryExpenses.Count;
 
@@ -342,14 +381,49 @@ namespace FinancialManager.ClientApp
 
 
 
+        private Expense GetValuesForDiagram(int month)
+        {
+            return _dBContext.Expenses.Where(e => e.Day.Month == month).OrderByDescending(e => e.Day.Day).FirstOrDefault();
+        }
+
+        public void MakeResponseDiaram(WpfPlot plot)
+        {
+            int size = 13;
+
+            Expense expense;
+
+            double[] valuesA = new double[size];
+
+            double[] valuesB =  new double[size];
+
+
+            for (int i = 1; i < size; i++)
+            {
+                expense = GetValuesForDiagram(i);
+
+                if (expense != null)
+                {
+                    valuesA[i] = double.Parse(expense.PlaneAmount.ToString());
+                    valuesB[i] = double.Parse(expense.CurrentAmount.ToString());
+                }
+                else 
+                {
+                    valuesA[i] = 0;
+                    valuesB[i] = 0;
+                }
+            }
+
+            plot.Plot.AddBar(valuesA);
+            plot.Plot.AddBar(valuesB);
+
+            plot.Plot.SetAxisLimits(yMin:0, xMin:0, xMax: size);
+
+            plot.Refresh();
+        }
+
         public void Dispose()
         {
             _dBContext.Dispose();
         }
-    }
-
-    public class MonthStatistic
-    {
-
     }
 }
