@@ -39,7 +39,7 @@ public partial class MainWindow : Window
         DataContext = _viewModel;
     }
     
-       private void Button_Click(object sender, RoutedEventArgs e)
+    private void Button_Click(object sender, RoutedEventArgs e)
     {
         if (CircleWindow == null)
         {
@@ -85,6 +85,22 @@ public partial class MainWindow : Window
             //pie.LegendLabels = LegendLabels;
             //formsPlot1.Plot.Legend();
             //formsPlot1.Refresh();
+    }
+
+    private void ProgressBar_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        foreach (var item in _viewModel.DailyCategoryExpenses)
+        {
+            if (item.PlaneExpense < item.ActuallyExpense)
+            {
+                decimal Max = item.ActuallyExpense;
+                decimal Value = item.PlaneExpense;
+               ((ProgressBar)sender).Background= new SolidColorBrush(Colors.Red);
+                ((ProgressBar)sender).Maximum = (int)Max;
+                ((ProgressBar)sender).Value = (int)Value;
+            }
+        }
+
     }
 }
 
