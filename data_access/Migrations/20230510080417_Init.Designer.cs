@@ -12,8 +12,8 @@ using data_access;
 namespace data_access.Migrations
 {
     [DbContext(typeof(FinancialManagerDBContext))]
-    [Migration("20230509052659_statistic")]
-    partial class statistic
+    [Migration("20230510080417_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,23 +87,23 @@ namespace data_access.Migrations
                         new
                         {
                             Id = 1,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 2500m,
                             Name = "Utility payments",
-                            PlaneExpense = 0m
+                            PlaneExpense = 5000m
                         },
                         new
                         {
                             Id = 2,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 2500m,
                             Name = "Products",
-                            PlaneExpense = 0m
+                            PlaneExpense = 3000m
                         },
                         new
                         {
                             Id = 3,
-                            ActuallyExpense = 0m,
+                            ActuallyExpense = 1200m,
                             Name = "Money for the road",
-                            PlaneExpense = 0m
+                            PlaneExpense = 1500m
                         });
                 });
 
@@ -197,7 +197,7 @@ namespace data_access.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("IncomeCategoryId")
+                    b.Property<int>("Category_for_IncomeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Month")
@@ -210,7 +210,7 @@ namespace data_access.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IncomeCategoryId");
+                    b.HasIndex("Category_for_IncomeId");
 
                     b.ToTable("Incomes", t =>
                         {
@@ -223,7 +223,7 @@ namespace data_access.Migrations
                         {
                             Id = 1,
                             Amount = 20000m,
-                            IncomeCategoryId = 1,
+                            Category_for_IncomeId = 1,
                             Month = "March",
                             Year = 2023
                         },
@@ -231,7 +231,7 @@ namespace data_access.Migrations
                         {
                             Id = 2,
                             Amount = 5000m,
-                            IncomeCategoryId = 2,
+                            Category_for_IncomeId = 2,
                             Month = "March",
                             Year = 2023
                         },
@@ -239,7 +239,7 @@ namespace data_access.Migrations
                         {
                             Id = 3,
                             Amount = 10000m,
-                            IncomeCategoryId = 3,
+                            Category_for_IncomeId = 3,
                             Month = "March",
                             Year = 2023
                         });
@@ -258,13 +258,13 @@ namespace data_access.Migrations
 
             modelBuilder.Entity("data_access.Entities.Income", b =>
                 {
-                    b.HasOne("data_access.Entities.Category_for_Income", "category")
+                    b.HasOne("data_access.Entities.Category_for_Income", "Category")
                         .WithMany("Incomes")
-                        .HasForeignKey("IncomeCategoryId")
+                        .HasForeignKey("Category_for_IncomeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("category");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("data_access.Entities.Category_for_Income", b =>

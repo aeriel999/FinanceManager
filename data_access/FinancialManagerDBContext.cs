@@ -28,8 +28,8 @@ namespace data_access
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G446FD0\SQLEXPRESS;
-                                           Initial Catalog = FinancialManager_Db;
+            optionsBuilder.UseSqlServer(@"Data Source=.;
+                                           Initial Catalog = FinancialManager_Db2;
                                            Integrated Security=True; Connect Timeout=30;
                                            Encrypt=False;TrustServerCertificate=False;
                                            ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
@@ -63,7 +63,7 @@ namespace data_access
            
           
 
-            modelBuilder.Entity<Income>().HasOne(i => i.category).WithMany(i => i.Incomes).HasForeignKey(i=>i.IncomeCategoryId);
+            //modelBuilder.Entity<Income>().HasOne(i => i.category).WithMany(i => i.Incomes).HasForeignKey(i=>i.IncomeCategoryId);
 
 
             modelBuilder.Entity<Category_for_expense>().Property(c=>c.PlaneExpense).HasColumnType("money");

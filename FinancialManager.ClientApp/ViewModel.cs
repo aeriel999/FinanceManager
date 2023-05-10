@@ -27,8 +27,8 @@ namespace FinancialManager.ClientApp
             _dailyCategoryExpenses = new ObservableCollection<Category_for_expense>(_dBContext.Categories_For_Expense
                                                                                                 .Include(c => c.Items));
 
-            _dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
-                                                                                            .Include(i => i.Incomes));
+            //_dailyCategory_for_Income = new ObservableCollection<Category_for_Income>(_dBContext.Category_For_Incomes
+            //                                                                                .Include(i => i.Incomes));
 
             CountCurrentAmount();
         }
