@@ -19,7 +19,7 @@
             <Setter Property="TextAlignment" Value="Justify" ></Setter>
             <Setter Property="VerticalAlignment" Value="Center" ></Setter>
             <Setter Property="HorizontalAlignment" Value="Stretch" ></Setter>
-            <Setter Property="FontSize" Value="22"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
             <Setter Property="FontFamily" Value="Consolas"></Setter>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightBrush}"></Setter>
             <Setter Property="Margin" Value="15"></Setter>
@@ -27,7 +27,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -39,36 +39,41 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <DatePicker  Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}"
+            <DatePicker Grid.RowSpan="2" Width="Auto" Margin="10" SelectedDate="{Binding Date, Mode=OneWay}"
                          SelectedDateFormat="Long" Style="{StaticResource MaterialDesignOutlinedDatePicker}" 
                          FontFamily="Consolas" FontSize="15" BorderBrush="{DynamicResource PrimaryHueLightBrush}"/>
 
-            <Button  Grid.Column="3"  Margin="10,0,10,0"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  
+            <Button  Grid.Column="1" Grid.Row="1" Margin="10,0,10,0"  Style="{StaticResource MaterialDesignRaisedDarkButton}"  
                      Height="40" FontSize="22" FontFamily="Consolas" Width="Auto"
                     materialDesign:ButtonAssist.CornerRadius="20" VerticalAlignment="Stretch" Click="OpenResponseWindowBtnClick">
-                Expenses</Button>
+                Go to expenses</Button>
 
 
-            <TextBlock Grid.Column="1">Plane: <Run Text="{Binding Amount, Mode=OneWay}"></Run>
-                UAH / Spent: <Run Text="{Binding CurrentAmount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Run>UAH</TextBlock>
-            <TextBlock Width="Auto" Grid.Row="1" Foreground="{DynamicResource SecondaryHueMidBrush}" Text="{Binding Balance}"
-                       Margin="10" FontSize="35" FontWeight="Bold"/> 
-            <Button Margin="10,0,10,0" Grid.Column="3" Grid.Row="1"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
+            <TextBlock Grid.Column="1" Grid.Row="0">Plane: <Run Text="{Binding Amount, Mode=OneWay, StringFormat='0,0.00'}"></Run>
+                UAH / Spent: <Run Text="{Binding CurrentAmount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat='0,0.0'}"></Run>UAH</TextBlock>
+            <TextBlock Width="Auto" Grid.Row="2" Grid.RowSpan="2" Foreground="{DynamicResource SecondaryHueMidBrush}" Text="{Binding Balance}"
+                       Margin="10" FontSize="35" FontWeight="Bold"/>
+            <Button Margin="10,0,10,0" Grid.Column="1" Grid.Row="3"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
                     Height="40" FontSize="22" FontFamily="Consolas" Width="Auto" Click="OpenIncomeWindowBtnClick"
-                    materialDesign:ButtonAssist.CornerRadius="20">Incomes</Button>
-            <TextBlock Width="Auto" Grid.Column="1" Grid.Row="1">Plane: <Run Text="{Binding CostPlane}"></Run>
-                UAH / Already get: <Run Text="{Binding CostSpent}"></Run>UAH</TextBlock>
+                    materialDesign:ButtonAssist.CornerRadius="20">Go to incomes</Button>
+            <TextBlock Width="Auto" Grid.Column="1" Grid.Row="2">Plane: <Run Text="{Binding CostPlane, StringFormat='0,0.0'}"></Run>
+                UAH / Already get: <Run Text="{Binding CostSpent, StringFormat='0,0.00'}"></Run>UAH</TextBlock>
+            
+            <WpfPlot x:Name="formsPlot1" Margin="5" Grid.Column="3" Grid.RowSpan="4" Loaded="formsPlot1_Loaded"
+                      Height="200" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
         </Grid >
         <Grid Grid.Row="1" Height="Auto" VerticalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="2*"></ColumnDefinition>
-                <ColumnDefinition  Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
             <ListBox x:Name="LB" ItemsSource="{Binding DailyCategoryExpenses}" HorizontalContentAlignment="Stretch" Grid.Column="0"
-                     MaxHeight="450" Height="Auto" MinHeight="300">
+                   Height="Auto" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card
@@ -88,18 +93,21 @@
                                            Foreground="{DynamicResource MaterialDesignCardBackground}" 
                                            FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" 
                                            Margin="20,0,0,0"></TextBlock>
-                                <TextBlock Grid.Column="1" Margin="0" ToolTip="Spent" 
-                                           Text="{Binding PlaneExpense, UpdateSourceTrigger=PropertyChanged}" 
+
+                                <TextBlock Grid.Column="1" Margin="5" ToolTip="Spent" Text="{Binding ActuallyExpense, StringFormat='0,0.00'}" 
+
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
-                                           HorizontalAlignment="Stretch" TextAlignment="Center"/> 
+                                           HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" /> 
                                 <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" 
                                              Foreground="{DynamicResource PrimaryHueDarkBrush}" Height="10" 
                                              Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"
-                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}">
+                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}" DataContextChanged="ProgressBar_DataContextChanged">
                                 </ProgressBar>
-                                <TextBlock Grid.Column="3" Margin="0" ToolTip="Plane" Text="{Binding ActuallyExpense}" 
+
+                                <TextBlock Grid.Column="3" Margin="5" ToolTip="Plane" Text="{Binding PlaneExpense, StringFormat='0,0.00'}" 
+
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
-                                           HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                                           HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBox Grid.Column="4" Foreground="{DynamicResource MaterialDesignCardBackground}"
                                          FontSize="18" FontFamily="Consolas" Width="100" HorizontalContentAlignment="Right" 
                                          HorizontalAlignment="Stretch" Text="{Binding DailyCostSpent, Mode=TwoWay}"/> 
@@ -110,9 +118,7 @@
             </ListBox>
 
 
-            <WpfPlot x:Name="formsPlot1" Margin="5" Grid.Column="1" Loaded="formsPlot1_Loaded"
-                      Height="200" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        
+           
         </Grid>
         <Grid Grid.Row="2" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -125,7 +131,7 @@
                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" >Add</Button>
             <Button Grid.Column="4" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" 
                     Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click"
-                    Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10">More Diagrams</Button>
+                    Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10">Statistics</Button>
         </Grid>
     </Grid>
 </Window>

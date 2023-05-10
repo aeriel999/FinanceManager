@@ -39,7 +39,7 @@ public partial class MainWindow : Window
         DataContext = _viewModel;
     }
     
-       private void Button_Click(object sender, RoutedEventArgs e)
+    private void Button_Click(object sender, RoutedEventArgs e)
     {
         if (CircleWindow == null)
         {
@@ -75,6 +75,22 @@ public partial class MainWindow : Window
     private void formsPlot1_Loaded(object sender, RoutedEventArgs e)
     {
         _viewModel.MakePlaneAmounDiagram(formsPlot1);
+    }
+
+    private void ProgressBar_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        foreach (var item in _viewModel.DailyCategoryExpenses)
+        {
+            if (item.PlaneExpense < item.ActuallyExpense)
+            {
+                decimal Max = item.ActuallyExpense;
+                decimal Value = item.PlaneExpense;
+               ((ProgressBar)sender).Background= new SolidColorBrush(Colors.Red);
+                ((ProgressBar)sender).Maximum = (int)Max;
+                ((ProgressBar)sender).Value = (int)Value;
+            }
+        }
+
     }
 }
 
