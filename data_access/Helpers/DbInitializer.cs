@@ -70,28 +70,6 @@ namespace data_access.Helpers
                 }
             });
         }
-        public static void SeedCategoryIncome(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Category_for_Income>().HasData(new Category_for_Income[]
-
-            {
-                new Category_for_Income()
-                {
-                    Id = 1,
-                    Name="Salary",
-                },
-                new Category_for_Income()
-                {
-                    Id=2,
-                    Name="Deposit"
-                },
-                new Category_for_Income()
-                {
-                    Id=3,
-                    Name="Investment"
-                }
-            });
-        }
         public static void SeedIncome(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Income>().HasData(new Income[]
@@ -99,29 +77,24 @@ namespace data_access.Helpers
                 new Income()
                 {
                     Id = 1,
-                    Month="March",
-                    Year=2023,
+                    Name="Salary",
                     Amount=20000,
-                    Category_for_IncomeId=1
+
                 },
                 new Income()
                 {
-                    Id=2,
-                    Month="March",
-                    Year=2023,
-                    Amount=5000,
-                    Category_for_IncomeId=2
+                    Id = 2,
+                    Name="Deposit",
+                    Amount=20000,
                 },
                 new Income()
                 {
-                    Id=3,
-                    Month="March",
-                    Year=2023,
-                    Amount=10000,
-                    Category_for_IncomeId=3
+                    Id = 3,
+                    Name="Investment",
+                    Amount=20000,
                 }
             });
         }
-     
+
     }
 }

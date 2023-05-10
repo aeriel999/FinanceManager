@@ -22,41 +22,6 @@ namespace data_access.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("data_access.Entities.Category_for_Income", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category_For_Incomes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Salary"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Deposit"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Investment"
-                        });
-                });
-
             modelBuilder.Entity("data_access.Entities.Category_for_expense", b =>
                 {
                     b.Property<int>("Id")
@@ -192,53 +157,41 @@ namespace data_access.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
-                    b.Property<int>("Category_for_IncomeId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Month")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Category_for_IncomeId");
-
-                    b.ToTable("Incomes", t =>
-                        {
-                            t.HasCheckConstraint("Amount", "Amount >= 0")
-                                .HasName("Amount1");
-                        });
+                    b.ToTable("Incomes");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Amount = 20000m,
-                            Category_for_IncomeId = 1,
-                            Month = "March",
-                            Year = 2023
+                            Month = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Salary"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 5000m,
-                            Category_for_IncomeId = 2,
-                            Month = "March",
-                            Year = 2023
+                            Amount = 20000m,
+                            Month = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Deposit"
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 10000m,
-                            Category_for_IncomeId = 3,
-                            Month = "March",
-                            Year = 2023
+                            Amount = 20000m,
+                            Month = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Investment"
                         });
                 });
 
@@ -251,22 +204,6 @@ namespace data_access.Migrations
                         .IsRequired();
 
                     b.Navigation("category");
-                });
-
-            modelBuilder.Entity("data_access.Entities.Income", b =>
-                {
-                    b.HasOne("data_access.Entities.Category_for_Income", "Category")
-                        .WithMany("Incomes")
-                        .HasForeignKey("Category_for_IncomeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("data_access.Entities.Category_for_Income", b =>
-                {
-                    b.Navigation("Incomes");
                 });
 
             modelBuilder.Entity("data_access.Entities.Category_for_expense", b =>

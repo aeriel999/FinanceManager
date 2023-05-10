@@ -67,9 +67,9 @@
                         HorizontalAlignment="Right"
                         Margin="0,0,5,0"/>
 
-            
-         
-                <ListBox ItemsSource="{Binding Category_for_Income}" Grid.Row="1"
+
+
+            <ListBox ItemsSource="{Binding IncomesItem}" Grid.Row="1"
                          Grid.ColumnSpan="3">
 
                     <ListBox.ItemTemplate>
@@ -84,7 +84,7 @@
                                         <ColumnDefinition Width="40"/>
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="160"/>
-                       
+ 
                                         <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
                                 <CheckBox Grid.Column="0" 
@@ -92,14 +92,14 @@
                                 <TextBox  TextChanged="CategoryNameIn_TextChanged_1" Grid.Column="1" Text="{Binding Name, Mode=TwoWay}"  IsEnabled="{Binding CanEdit}" Margin="0,0,5,0"
                                          x:Name="CategoryNameIn"
                                           LostFocus="CategoryNameIn_LostFocus"/>
-                                <TextBox IsEnabled="{Binding CanEdit}" Grid.Column="2"  Width="100" HorizontalAlignment="Center"
-                                         Text="{Binding AmountIncome,Mode=TwoWay}" 
+                                <TextBox LostFocus="TextBox_LostFocus" TextChanged="TextBox_TextChanged" IsEnabled="{Binding CanEdit}" Grid.Column="2"  Width="100" HorizontalAlignment="Center"
+                                         Text="{Binding Amount,Mode=TwoWay}" 
     VerticalAlignment="Top"
     materialDesign:HintAssist.Hint="Amount"
     materialDesign:TextFieldAssist.CharacterCounterVisibility="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxTextCountComboBox, Converter={StaticResource BooleanToVisibilityConverter}}"
     MaxLength="40"
     Style="{StaticResource MaterialDesignFilledTextBox}"
-    TextWrapping="Wrap" />
+    TextWrapping="Wrap"/>
                                 <Button x:Name="DeleteBtn" Click="DeleteBtn_Click" Width="100" HorizontalAlignment="Center" Content="Delete" Grid.Column="4" IsEnabled="{Binding IsChecked, Mode=TwoWay}"/>
                             </Grid>
                             </ListBoxItem>

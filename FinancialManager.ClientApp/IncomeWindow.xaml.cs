@@ -52,10 +52,16 @@ public partial class IncomeWindow : Window
 
     private void AddBtn_Click(object sender, RoutedEventArgs e)
     {
+
         if (txtBoxNameIncome.Text.Length > 3)
-            _model.AddCateroryIncome(new Category_for_Income(txtBoxNameIncome.Text));
+        {
+            _model.AddCateroryIncome(new Income(txtBoxNameIncome.Text));
+        }
         else
+        {
             MessageBox.Show("Enter name for new category");
+        }
+        txtBoxNameIncome.Clear();
     }
 
     private void closeBtn_Click(object sender, RoutedEventArgs e)
@@ -78,5 +84,19 @@ public partial class IncomeWindow : Window
         _model.SaveChanges();
         _model.SetEditingPropertyIncome(false);
 
+    }
+
+    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_isBusy)
+        {
+            _model.NumberOfChanges++;
+            _isBusy = false;
+        }
+    }
+
+    private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+    {
+        _isBusy = true;
     }
 }
