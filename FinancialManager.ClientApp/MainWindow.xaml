@@ -54,15 +54,14 @@
                 Go to expenses</Button>
 
 
-            <TextBlock Grid.Column="1" Grid.Row="0">Plane: <Run Text="{Binding Amount, Mode=OneWay, StringFormat='0,0.00'}"></Run>
-                UAH / Spent: <Run Text="{Binding CurrentAmount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat='0,0.0'}"></Run>UAH</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="0">Plane: <Run Text="{Binding CurrentAmount, Mode=OneWay, StringFormat='0,0.00'}"></Run>
+                UAH / Spent: <Run Text="{Binding Amount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat='0,0.0'}"></Run>UAH</TextBlock>
             <TextBlock Width="Auto" Grid.Row="2" Grid.RowSpan="2" Foreground="{DynamicResource SecondaryHueMidBrush}" Text="{Binding Balance}"
                        Margin="10" FontSize="35" FontWeight="Bold"/>
             <Button Margin="10,0,10,0" Grid.Column="1" Grid.Row="3"  Style="{StaticResource MaterialDesignRaisedDarkButton}" 
                     Height="40" FontSize="22" FontFamily="Consolas" Width="Auto" Click="OpenIncomeWindowBtnClick"
                     materialDesign:ButtonAssist.CornerRadius="20">Go to incomes</Button>
-            <TextBlock Width="Auto" Grid.Column="1" Grid.Row="2">Plane: <Run Text="{Binding CostPlane, StringFormat='0,0.0'}"></Run>
-                UAH / Already get: <Run Text="{Binding CostSpent, StringFormat='0,0.00'}"></Run>UAH</TextBlock>
+            <TextBlock Width="Auto" Grid.Column="1" Grid.Row="2">Current income: <Run Text="{Binding Bin, StringFormat='0,0.00'}"></Run>UAH</TextBlock>
             
             <WpfPlot x:Name="formsPlot1" Margin="5" Grid.Column="3" Grid.RowSpan="4" Loaded="formsPlot1_Loaded"
                       Height="200" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -94,19 +93,18 @@
                                            FontSize="22" HorizontalAlignment="Stretch" TextAlignment="Left" 
                                            Margin="20,0,0,0"></TextBlock>
 
-                                <TextBlock Grid.Column="1" Margin="5" ToolTip="Spent" Text="{Binding PlaneExpense, StringFormat='0,0.00'}" 
+                                <TextBlock x:Name="SpentTB" Grid.Column="1" Margin="5" ToolTip="Spent" Text="{Binding PlaneExpense, StringFormat='0,0.00'}" 
 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" /> 
                                 <ProgressBar Grid.Column="2" Background="{StaticResource SecondaryHueMidBrush }" 
                                              Foreground="{DynamicResource PrimaryHueDarkBrush}" Height="10" 
                                              Width="Auto" Margin="5,0,5,0" HorizontalAlignment="Stretch"
-                                             Maximum="{Binding PlaneExpense}" Value="{Binding ActuallyExpense}" 
-                                             ValueChanged="ProgressBar_ValueChanged"
-                                             DataContextChanged="ProgressBar_DataContextChanged">
+                                             Maximum="{Binding ActuallyExpense}" Value="{Binding PlaneExpense}" 
+                                             ValueChanged="ProgressBar_ValueChanged">
                                 </ProgressBar>
 
-                                <TextBlock Grid.Column="3" Margin="5" ToolTip="Plane" Text="{Binding ActuallyExpense, StringFormat='0,0.00'}" 
+                                <TextBlock x:Name="PlaneTB" Grid.Column="3" Margin="5" ToolTip="Plane" Text="{Binding ActuallyExpense, StringFormat='0,0.00'}" 
 
                                            Foreground="{DynamicResource PrimaryHueDarkBrush}" FontSize="18" 
                                            HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
@@ -130,10 +128,10 @@
             </Grid.ColumnDefinitions>
             <Button  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalContentAlignment="Center" Click="SaveAmountBtnClick"
                      VerticalAlignment="Center" Style="{StaticResource MaterialDesignRaisedButton}"
-                    Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" >Add</Button>
+                    Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10"  FontSize="20" FontFamily="Consolas" FontWeight="Bold">Add</Button>
             <Button Grid.Column="4" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" 
                     Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click"
-                    Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10">Statistics</Button>
+                    Height="40" Width="150" materialDesign:ButtonAssist.CornerRadius="10"  FontSize="20" FontFamily="Consolas" FontWeight="Bold">Statistics</Button>
         </Grid>
     </Grid>
 </Window>

@@ -283,6 +283,29 @@ namespace FinancialManager.ClientApp
             plot.Plot.Legend();
             plot.Refresh();
         }
+        public void MakeIncomeDiagram(WpfPlot plot)
+        {
+            int size = _incomes.Count;
+
+            double[] values = new double[size];
+            string[] sliceLabels = new string[size];
+            string[] legendLabels = new string[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                values[i] = double.Parse(_incomes[i].Amount.ToString());
+                sliceLabels[i] = _incomes[i].Amount.ToString();
+                legendLabels[i] = _incomes[i].Name;
+            }
+
+            var pie = plot.Plot.AddPie(values);
+            pie.SliceLabels = sliceLabels;
+            pie.ShowLabels = false;
+
+            pie.LegendLabels = legendLabels;
+            plot.Plot.Legend();
+            plot.Refresh();
+        }
         public void SetEditingPropertyIncome(bool canEdit)
         {
             foreach (var c in _incomes)
@@ -351,6 +374,10 @@ namespace FinancialManager.ClientApp
             return _dBContext.Expenses.Where(e => e.Day.Month == month).OrderByDescending(e => e.Day.Day).FirstOrDefault();
         }
 
+        private Income GetValuesForDiagramIncome(int month)
+        {
+            return _dBContext.Incomes.Where(e => e.Month.Month == month).OrderByDescending(e => e.Month.Day).FirstOrDefault();
+        }
         public void MakeResponseDiaram(WpfPlot plot)
         {
             int size = 13;
@@ -382,6 +409,43 @@ namespace FinancialManager.ClientApp
             plot.Plot.AddBar(valuesB);
 
             plot.Plot.SetAxisLimits(yMin:0, xMin:0, xMax: size);
+
+            plot.Refresh();
+        }
+
+        public void MakeExpensesIncomeDiaram(WpfPlot plot)
+        {
+            int size = 13;
+
+            Expense expense;
+            Income income;
+
+            double[] valuesA = new double[size];
+
+            double[] valuesB = new double[size];
+
+
+            for (int i = 1; i < size; i++)
+            {
+                expense = GetValuesForDiagram(i);
+                income= GetValuesForDiagramIncome(i);
+
+                if (expense != null && income!=null)
+                {
+                    valuesA[i] = double.Parse(expense.CurrentAmount.ToString());
+                    valuesB[i] = double.Parse(income.Amount.ToString());
+                }
+                else
+                {
+                    valuesA[i] = 0;
+                    valuesB[i] = 0;
+                }
+            }
+
+            plot.Plot.AddBar(valuesA);
+            plot.Plot.AddBar(valuesB);
+
+            plot.Plot.SetAxisLimits(yMin: 0, xMin: 0, xMax: size);
 
             plot.Refresh();
         }
