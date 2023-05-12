@@ -77,36 +77,12 @@ public partial class MainWindow : Window
         _viewModel.MakePlaneAmounDiagram(formsPlot1);
     }
 
-    private void ProgressBar_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-        foreach (var item in _viewModel.DailyCategoryExpenses)
-        {
-            if (item.PlaneExpense < item.ActuallyExpense)
-            {
-                decimal Max = item.ActuallyExpense;
-                decimal Value = item.PlaneExpense;
-               ((ProgressBar)sender).Background= new SolidColorBrush(Colors.Red);
-                ((ProgressBar)sender).Maximum = (int)Max;
-                ((ProgressBar)sender).Value = (int)Value;
-            }
-        }
-
-    }
+   
 
     private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-        foreach (var item in _viewModel.DailyCategoryExpenses)
-        {
-            if (item.PlaneExpense < item.ActuallyExpense)
-            {
-                decimal Max = item.ActuallyExpense;
-                decimal Value = item.PlaneExpense;
-                ((ProgressBar)sender).Background = new SolidColorBrush(Colors.Red);
-                ((ProgressBar)sender).Maximum = (int)Max;
-                ((ProgressBar)sender).Value = (int)Value;
-            }
-        }
-
+        if(((ProgressBar)sender).Value >= ((ProgressBar)sender).Maximum)
+            ((ProgressBar)sender).Background = new SolidColorBrush(Colors.Red);
     }
 }
 
